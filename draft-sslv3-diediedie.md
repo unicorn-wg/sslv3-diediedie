@@ -60,7 +60,7 @@ informative:
     date: 2002-08
   POODLE:
     target: http://googleonlinesecurity.blogspot.com/2014/10/this-poodle-bites-exploiting-ssl-30.html
-    title: This POODLE bites.. exploiting the SSL 3.0 fallback
+    title: "This POODLE bites: exploiting the SSL 3.0 fallback"
     author:
       name: Bodo Moeller
       ins: B. Moeller
