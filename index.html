@@ -1,0 +1,954 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>STUN/TURN using PHP in Despair</title>
+
+  <style type="text/css" title="Xml2Rfc (sans serif)">
+  /*<![CDATA[*/
+	  a {
+	  text-decoration: none;
+	  }
+      /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+      a.info {
+          /* This is the key. */
+          position: relative;
+          z-index: 24;
+          text-decoration: none;
+      }
+      a.info:hover {
+          z-index: 25;
+          color: #FFF; background-color: #900;
+      }
+      a.info span { display: none; }
+      a.info:hover span.info {
+          /* The span will display just on :hover state. */
+          display: block;
+          position: absolute;
+          font-size: smaller;
+          top: 2em; left: -5em; width: 15em;
+          padding: 2px; border: 1px solid #333;
+          color: #900; background-color: #EEE;
+          text-align: left;
+      }
+	  a.smpl {
+	  color: black;
+	  }
+	  a:hover {
+	  text-decoration: underline;
+	  }
+	  a:active {
+	  text-decoration: underline;
+	  }
+	  address {
+	  margin-top: 1em;
+	  margin-left: 2em;
+	  font-style: normal;
+	  }
+	  body {
+	  color: black;
+	  font-family: verdana, helvetica, arial, sans-serif;
+	  font-size: 10pt;
+	  max-width: 55em;
+	  
+	  }
+	  cite {
+	  font-style: normal;
+	  }
+	  dd {
+	  margin-right: 2em;
+	  }
+	  dl {
+	  margin-left: 2em;
+	  }
+	
+	  ul.empty {
+	  list-style-type: none;
+	  }
+	  ul.empty li {
+	  margin-top: .5em;
+	  }
+	  dl p {
+	  margin-left: 0em;
+	  }
+	  dt {
+	  margin-top: .5em;
+	  }
+	  h1 {
+	  font-size: 14pt;
+	  line-height: 21pt;
+	  page-break-after: avoid;
+	  }
+	  h1.np {
+	  page-break-before: always;
+	  }
+	  h1 a {
+	  color: #333333;
+	  }
+	  h2 {
+	  font-size: 12pt;
+	  line-height: 15pt;
+	  page-break-after: avoid;
+	  }
+	  h3, h4, h5, h6 {
+	  font-size: 10pt;
+	  page-break-after: avoid;
+	  }
+	  h2 a, h3 a, h4 a, h5 a, h6 a {
+	  color: black;
+	  }
+	  img {
+	  margin-left: 3em;
+	  }
+	  li {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol p {
+	  margin-left: 0em;
+	  }
+	  p {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  pre {
+	  margin-left: 3em;
+	  background-color: lightyellow;
+	  padding: .25em;
+	  }
+	  pre.text2 {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f0f0f0;
+	  width: 69em;
+	  }
+	  pre.inline {
+	  background-color: white;
+	  padding: 0em;
+	  }
+	  pre.text {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  width: 69em;
+	  }
+	  pre.drawing {
+	  border-style: solid;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  padding: 2em;
+	  }
+	  table {
+	  margin-left: 2em;
+	  }
+	  table.tt {
+	  vertical-align: top;
+	  }
+	  table.full {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.headers {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.tt td {
+	  vertical-align: top;
+	  }
+	  table.full td {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.tt th {
+	  vertical-align: top;
+	  }
+	  table.full th {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.headers th {
+	  border-style: none none inset none;
+	  border-width: 1px;
+	  }
+	  table.left {
+	  margin-right: auto;
+	  }
+	  table.right {
+	  margin-left: auto;
+	  }
+	  table.center {
+	  margin-left: auto;
+	  margin-right: auto;
+	  }
+	  caption {
+	  caption-side: bottom;
+	  font-weight: bold;
+	  font-size: 9pt;
+	  margin-top: .5em;
+	  }
+	
+	  table.header {
+	  border-spacing: 1px;
+	  width: 95%;
+	  font-size: 10pt;
+	  color: white;
+	  }
+	  td.top {
+	  vertical-align: top;
+	  }
+	  td.topnowrap {
+	  vertical-align: top;
+	  white-space: nowrap; 
+	  }
+	  table.header td {
+	  background-color: gray;
+	  width: 50%;
+	  }
+	  table.header a {
+	  color: white;
+	  }
+	  td.reference {
+	  vertical-align: top;
+	  white-space: nowrap;
+	  padding-right: 1em;
+	  }
+	  thead {
+	  display:table-header-group;
+	  }
+	  ul.toc, ul.toc ul {
+	  list-style: none;
+	  margin-left: 1.5em;
+	  margin-right: 0em;
+	  padding-left: 0em;
+	  }
+	  ul.toc li {
+	  line-height: 150%;
+	  font-weight: bold;
+	  font-size: 10pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  ul.toc li li {
+	  line-height: normal;
+	  font-weight: normal;
+	  font-size: 9pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  li.excluded {
+	  font-size: 0pt;
+	  }
+	  ul p {
+	  margin-left: 0em;
+	  }
+	
+	  .comment {
+	  background-color: yellow;
+	  }
+	  .center {
+	  text-align: center;
+	  }
+	  .error {
+	  color: red;
+	  font-style: italic;
+	  font-weight: bold;
+	  }
+	  .figure {
+	  font-weight: bold;
+	  text-align: center;
+	  font-size: 9pt;
+	  }
+	  .filename {
+	  color: #333333;
+	  font-weight: bold;
+	  font-size: 12pt;
+	  line-height: 21pt;
+	  text-align: center;
+	  }
+	  .fn {
+	  font-weight: bold;
+	  }
+	  .hidden {
+	  display: none;
+	  }
+	  .left {
+	  text-align: left;
+	  }
+	  .right {
+	  text-align: right;
+	  }
+	  .title {
+	  color: #990000;
+	  font-size: 18pt;
+	  line-height: 18pt;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-top: 36pt;
+	  }
+	  .vcardline {
+	  display: block;
+	  }
+	  .warning {
+	  font-size: 14pt;
+	  background-color: yellow;
+	  }
+	
+	
+	  @media print {
+	  .noprint {
+		display: none;
+	  }
+	
+	  a {
+		color: black;
+		text-decoration: none;
+	  }
+	
+	  table.header {
+		width: 90%;
+	  }
+	
+	  td.header {
+		width: 50%;
+		color: black;
+		background-color: white;
+		vertical-align: top;
+		font-size: 12pt;
+	  }
+	
+	  ul.toc a::after {
+		content: leader('.') target-counter(attr(href), page);
+	  }
+	
+	  ul.ind li li a {
+		content: target-counter(attr(href), page);
+	  }
+	
+	  .print2col {
+		column-count: 2;
+		-moz-column-count: 2;
+		column-fill: auto;
+	  }
+	  }
+	
+	  @page {
+	  @top-left {
+		   content: "Internet-Draft"; 
+	  } 
+	  @top-right {
+		   content: "December 2010"; 
+	  } 
+	  @top-center {
+		   content: "Abbreviated Title";
+	  } 
+	  @bottom-left {
+		   content: "Doe"; 
+	  } 
+	  @bottom-center {
+		   content: "Expires June 2011"; 
+	  } 
+	  @bottom-right {
+		   content: "[Page " counter(page) "]"; 
+	  } 
+	  }
+	
+	  @page:first { 
+		@top-left {
+		  content: normal;
+		}
+		@top-right {
+		  content: normal;
+		}
+		@top-center {
+		  content: normal;
+		}
+	  }
+  /*]]>*/
+  </style>
+  <style type="text/css">
+@viewport {
+  zoom: 1.0;
+  width: extend-to-zoom;
+}
+
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+
+body {
+  font: 11pt cambria, helvetica, arial, sans-serif;
+  font-size-adjust: 0.5;
+  line-height: 130%;
+  margin: 1em auto;
+  max-width: 700px;
+}
+
+.title, .filename, h1, h2, h3, h4 {
+  font-family: candara, helvetica, arial, sans-serif;
+  font-size-adjust: 0.5;
+}
+.title { font-size: 150%; }
+h1 { font-size: 130%; }
+h2 { font-size: 120%; }
+h3, h4 { font-size: 110%; }
+ul.toc >li { font-size: 95%; }
+ul.toc >li >ul, .figure, caption { font-size: 90%; }
+
+table {
+  margin-left: 0em;
+}
+table.header {
+  width: 100%;
+}
+
+table.header td {
+  background-color: inherit;
+  color: black;
+}
+
+samp, tt, code, pre {
+  font: 11pt consolas, monospace;
+  font-size-adjust: none;
+}
+
+pre.text, pre.text2 {
+  width: 90%;
+}
+
+dt {
+  float: left; clear: left;
+  margin: 0.5em 0.5em 0 0;
+}
+dt:first-child {
+  margin-top: 0;
+}
+dd {
+  margin: 0.5em 0 0 2em;
+}
+dd p, dd ul {
+  margin-top: 0; margin-bottom: 0;
+}
+dd *+p {
+  margin-top: 0.5em;
+}
+
+ol, ul {
+  padding: 0;
+  margin: 0.5em 0 0.5em 2em;
+}
+ul.toc, ul.toc ul { 
+  margin: 0 0 0 1.5em;
+}
+ul.toc a:first-child { 
+  display: inline-block; 
+  min-width: 1.2em;
+}  </style>
+
+  <link href="#rfc.toc" rel="Contents"/>
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
+<link href="#rfc.section.1.1" rel="Chapter" title="1.1 The Need for Standardization"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Basic Protocol Operation"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 Protocol Definition"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Terminology"/>
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Discovering External IP Address and Port"/>
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Storing Data"/>
+<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Notification"/>
+<link href="#rfc.section.3.5" rel="Chapter" title="3.5 Retrieving Data"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Implementation Notes"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="6 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="6.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="6.2 Informative References"/>
+<link href="#rfc.appendix.A" rel="Chapter" title="A Examples"/>
+<link href="#rfc.appendix.B" rel="Chapter" title="B Sample Implementation"/>
+<link href="#rfc.appendix.C" rel="Chapter" title="C Using XMPP as Out-Of-Band Channel"/>
+<link href="#rfc.authors" rel="Chapter"/>
+
+
+  <meta name="generator" content="xml2rfc version 2.4.8 - http://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Hartke, K. and C. Bormann" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-hartke-xmpp-stupid-latest" />
+  <meta name="dct.issued" scheme="ISO8601" content="2009-7-05" />
+  <meta name="dct.abstract" content="NAT (Network Address Translator) Traversal may require TURN (Traversal Using Relays around NAT) functionality in certain cases that are not unlikely to occur.  There is little incentive to deploy TURN servers, except by those who need them &#8212; who may not be in a position to deploy a new protocol on an Internet-connected node, in particular not one with deployment requirements as high as those of TURN." />
+  <meta name="description" content="NAT (Network Address Translator) Traversal may require TURN (Traversal Using Relays around NAT) functionality in certain cases that are not unlikely to occur.  There is little incentive to deploy TURN servers, except by those who need them &#8212; who may not be in a position to deploy a new protocol on an Internet-connected node, in particular not one with deployment requirements as high as those of TURN." />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+  <td class="left">XMPP Working Group</td>
+  <td class="right">K. Hartke</td>
+</tr>
+<tr>
+  <td class="left">Internet-Draft</td>
+  <td class="right">C. Bormann</td>
+</tr>
+<tr>
+  <td class="left">Intended status: Informational</td>
+  <td class="right">Universit&#228;t Bremen TZI</td>
+</tr>
+<tr>
+  <td class="left">Expires: January 6, 2010</td>
+  <td class="right">July 05, 2009</td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">STUN/TURN using PHP in Despair<br />
+  <span class="filename">draft-hartke-xmpp-stupid-latest</span></p>
+  
+  <h1 id="rfc.abstract">
+  <a href="#rfc.abstract">Abstract</a>
+</h1>
+<p>NAT (Network Address Translator) Traversal may require TURN (Traversal Using Relays around NAT) functionality in certain cases that are not unlikely to occur.  There is little incentive to deploy TURN servers, except by those who need them &#8212; who may not be in a position to deploy a new protocol on an Internet-connected node, in particular not one with deployment requirements as high as those of TURN.</p>
+<p>&#8220;STUN/TURN using PHP in Despair&#8221; is a highly deployable protocol for obtaining TURN-like functionality, while also providing the most important function of STUN.</p>
+<h1 id="rfc.status">
+  <a href="#rfc.status">Status of This Memo</a>
+</h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on January 6, 2010.</p>
+<h1 id="rfc.copyrightnotice">
+  <a href="#rfc.copyrightnotice">Copyright Notice</a>
+</h1>
+<p>Copyright (c) 2009 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
+<li>1.1.   <a href="#rfc.section.1.1">The Need for Standardization</a></li>
+<li>2.   <a href="#rfc.section.2">Basic Protocol Operation</a></li>
+<li>3.   <a href="#rfc.section.3">Protocol Definition</a></li>
+<li>3.1.   <a href="#rfc.section.3.1">Terminology</a></li>
+<li>3.2.   <a href="#rfc.section.3.2">Discovering External IP Address and Port</a></li>
+<li>3.3.   <a href="#rfc.section.3.3">Storing Data</a></li>
+<li>3.4.   <a href="#rfc.section.3.4">Notification</a></li>
+<li>3.5.   <a href="#rfc.section.3.5">Retrieving Data</a></li>
+<li>4.   <a href="#rfc.section.4">Implementation Notes</a></li>
+<li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
+<li>6.   <a href="#rfc.references">References</a></li>
+<li>6.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>6.2.   <a href="#rfc.references.2">Informative References</a></li>
+<li>Appendix A.   <a href="#rfc.appendix.A">Examples</a></li>
+<li>Appendix B.   <a href="#rfc.appendix.B">Sample Implementation</a></li>
+<li>Appendix C.   <a href="#rfc.appendix.C">Using XMPP as Out-Of-Band Channel</a></li>
+<li><a href="#rfc.authors">Authors' Addresses</a></li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#problems" id="problems">Introduction</a></h1>
+<p id="rfc.section.1.p.1">NAT (Network Address Translator) Traversal may require TURN (Traversal Using Relays around NAT) <a href="#I-D.ietf-behave-turn">[I-D.ietf-behave-turn]</a> functionality in certain cases that are not unlikely to occur.  There is little incentive to deploy TURN servers, except by those who need them &#8212; who may not be in a position to deploy a new protocol on an Internet-connected node, in particular not one with deployment requirements as high as those of TURN.</p>
+<p id="rfc.section.1.p.2">&#8220;STUN/TURN using PHP in Despair&#8221; is a highly deployable protocol for obtaining TURN-like functionality, while also providing the most important function of STUN <a href="#RFC5389">[RFC5389]</a>.</p>
+<p id="rfc.section.1.p.3">The high degree of deployability is achieved by making STuPiD a Web service, implementable in any Web application deployment scheme.  As PHP appears to be the solution of choice for avoiding deployment problems in the Web world, a PHP-based sample implementation of STuPiD is presented in <a href="#figimpl">Figure 5</a> in <a href="#impl">Appendix B</a>.  (This single-page script has been tested with a free-of-charge web hoster, so it should be deployable by literally everyone.)</p>
+<h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> <a href="#need" id="need">The Need for Standardization</a></h1>
+<p id="rfc.section.1.1.p.1">If STuPiD is so easy to deploy, why standardize on it? First of all, STuPiD server implementations will be done by other people than the clients making use of the service.  Clearly communicating between these communities is a good idea, in particular if there are security considerations.</p>
+<p id="rfc.section.1.1.p.2">Having one standard form of STuPiD service instead of one specific to each kind of client also creates an incentive for optimized implementations.</p>
+<p id="rfc.section.1.1.p.3">Finally, where STuPiD becomes part of a client standard (such as a potential extension to XMPP&#8217;s in-band byte-stream protocol as hinted in <a href="#xmpp">Appendix C</a>), it is a good thing if STuPiD is already defined.</p>
+<p id="rfc.section.1.1.p.4">Hence, this document focuses on the definition of the STuPiD service itself, tries to make this as general as possible without increasing complexity or cost and leaves the details of any client standards to future documents.</p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#ops" id="ops">Basic Protocol Operation</a></h1>
+<p id="rfc.section.2.p.1">The STuPiD protocol will typically be used with application instances that first attempt to obtain connectivity using mechanisms similar to those described in the STUN specification <a href="#RFC5389">[RFC5389]</a>.  However, with STuPiD, STUN is not really needed for TCP, as was demonstrated in previous STUN-like implementations <a href="#STUNT">[STUNT]</a>.  Instead, STuPiD (like <a href="#STUNT">[STUNT]</a>) provides a simple Web service that echoes the remote address and port of an incoming HTTP request; in most cases, this is enough to get the job done.</p>
+<p id="rfc.section.2.p.2">In case no connection can be established with this simple STUN(T)-like mechanism, a TURN-like relay is needed as a final fall-back.  The STuPiD protocol supports this, but solely provides a way for the data to be relayed.  STuPiD relies on an out-of-band channel to notify the peer whenever new data is available (synchronization signal).  See <a href="#xmpp">Appendix C</a> for one likely example of such an out-of-band channel.  (Note that the out-of-band channel may have a much lower throughput than the STuPiD relay channel &#8212; this is exactly the case in the example provided in <a href="#xmpp">Appendix C</a>, where the out-of-band channel is typically throughput-limited to on the order of a few kilobits per second.)</p>
+<p id="rfc.section.2.p.3">By designing the STuPiD web service in such a way that it can be implemented by a simple PHP script such as that presented in <a href="#impl">Appendix B</a>, it is easy to deploy by those who need the STuPiD services.  The combination of the low-throughput out-of-band channel for synchronization and the STuPiD web service for bulk data relaying is somewhat silly but gets the job done.</p>
+<p id="rfc.section.2.p.4">The STuPiD data relay is implemented as follows (see <a href="#figops">Figure 1</a>):</p>
+<p/>
+
+<ol>
+  <li>Peer A, the source of the data to be relayed, stores a chunk of data at the STuPiD server using an opaque identifier, the &#8220;chunk identifier&#8221;. How that chunk identifier is chosen is local to Peer A; it could be composed of a random session id and a sequence number.</li>
+  <li>Peer A notifies the receiver of the data, Peer B, that a new data chunk is available, specifying the URI needed for retrieval.  This notification is provided through an out-out-band channel.  (As an optimization for multiple consecutive transfers, A might inform B once of a constant prefix of that URI and only send a varying part such as a sequence number in each notification &#8212; this is something to be decided in the client-client notification protocol.)</li>
+  <li>Peer B retrieves the data from the STuPiD server using the URI provided by Peer A.</li>
+</ol>
+<p id="rfc.section.2.p.6">Note that the data transfer mechanism is one-way, i.e. to send data in the other direction as well, Peer B needs to perform the same steps using a STuPiD server at the same or a different location.</p>
+<div id="rfc.figure.1"/>
+<div id="figops"/>
+<pre>
+
+        STuPiD   ```````````````````````````````,
+        Script   &lt;----------------------------. ,
+                                              | ,
+          ^ ,                                 | ,
+          | ,                                 | ,
+    (1)   | ,                                 | ,  (3)
+    POST  | ,                                 | ,  GET
+          | ,                                 | ,
+          | v                                 | v
+
+        Peer A   -----------------------&gt;   Peer B
+                           (2)
+                       out-of-band
+                       Notification
+</pre>
+<p class="figure">Figure 1: STuPiD Protocol Operation</p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#protocol-definition" id="protocol-definition">Protocol Definition</a></h1>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#Terminology" id="Terminology">Terminology</a></h1>
+<p id="rfc.section.3.1.p.1">In this document, the key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; are to be interpreted as described in BCP 14, RFC 2119 <a href="#RFC2119">[RFC2119]</a> and indicate requirement levels for compliant STuPiD implementations.</p>
+<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#discovering-external-ip-address-and-port" id="discovering-external-ip-address-and-port">Discovering External IP Address and Port</a></h1>
+<p id="rfc.section.3.2.p.1">A client may discover its external IP address and the port required for port prediction by performing a HTTP GET request to a STuPiD server. The STuPiD server MUST reply with the remote address and remote port in the following format:</p>
+<p id="rfc.section.3.2.p.2">host &#8220;:&#8221; port</p>
+<p id="rfc.section.3.2.p.3">where &#8216;host&#8217; and &#8216;port&#8217; are defined as in <a href="#RFC3986">[RFC3986]</a>.</p>
+<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#storing-data" id="storing-data">Storing Data</a></h1>
+<p id="rfc.section.3.3.p.1">Data chunks are stored using the POST request of HTTP. The STuPiD server MUST support one URI parameter which is passed as query-string:</p>
+<p id="rfc.section.3.3.p.2">&#8216;chid&#8217;:  A unique ID identifying the data chunk to be stored.  The ID SHOULD be chosen from the characters of the base64url set <a href="#RFC4648">[RFC4648]</a>.</p>
+<p id="rfc.section.3.3.p.3">The payload of the POST request MUST be the data to be stored. The &#8216;Content-Type&#8217; SHOULD be &#8216;application/octet-stream&#8217;, although a STuPiD server implementation SHOULD simply ignore the &#8216;Content-Type&#8217; as a client implementation may be restricted and may not able to specify a specific &#8216;Content-Type&#8217;.  (E.g., in certain cases, the peer may be limited to sending the data as multipart-form-encoded &#8212; still, the data is stored as a byte stream.)</p>
+<p id="rfc.section.3.3.p.4">STuPiD servers may reject data chunks that are larger than some predefined limit.  This maximum size in bytes of each data chunk is RECOMMENDED to be 65536 or more.</p>
+<p id="rfc.section.3.3.p.5">As HTTP already provides data transparency, the data chunk SHOULD NOT be encoded using Base64 or any other data transparency mechanism; in any case, the STuPiD server will not attempt to decode the chunk.</p>
+<p id="rfc.section.3.3.p.6">The sender MUST wait for the HTTP response before going on to notify the receiver.</p>
+<h1 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4.</a> <a href="#notification" id="notification">Notification</a></h1>
+<p id="rfc.section.3.4.p.1">The sender notifies the receiver of the data chunk by passing via an out-of-band channel (which is not part of the STuPiD protocol):</p>
+<p id="rfc.section.3.4.p.2">The full URL from which the data chunk can be retrieved, i.e. the same URL that was used to store the data chunk, including the chunk ID parameter.</p>
+<p id="rfc.section.3.4.p.3">The exact notification mechanism over the out-of-band channel and the definition of a session is dependent on the out-of-band channel.  See <a href="#xmpp">Appendix C</a> for one example of such an out-of-band channel.</p>
+<h1 id="rfc.section.3.5"><a href="#rfc.section.3.5">3.5.</a> <a href="#retrieving-data" id="retrieving-data">Retrieving Data</a></h1>
+<p id="rfc.section.3.5.p.1">The notified peer retrieves the data chunk using a GET request with the URL supplied by the sender. The STuPiD server MUST set the &#8216;Content-Type&#8217; of the returned body to &#8216;application/octet-stream&#8217;.</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#implementation-notes" id="implementation-notes">Implementation Notes</a></h1>
+<p id="rfc.section.4.p.1">A STuPiD server implementation SHOULD delete stored data some time after it was stored. It is RECOMMENDED not to delete the data before five minutes have elapsed after it was stored.  Different client protocols will have different reactions to data that have been deleted prematurely and cannot be retrieved by the notified peer; this may be as trivial as packet loss or it may cause a reliable byte-stream to fail (<a href="#impl">Appendix B</a>).  (TODO: It may be useful to provide some hints in the storing POST request.)</p>
+<p id="rfc.section.4.p.2">STuPiD clients should aggregate data in order to minimize the number of requests to the STuPiD server per second.  The specific aggregation method chosen depends on the data rate required (and the maximum chunk size), the latency requirements, and the application semantics.</p>
+<p id="rfc.section.4.p.3">Clearly, it is up to the implementation to decide how the data chunks are actually stored.  A sufficiently silly STuPiD server implementation might for instance use a MySQL database.</p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
+<p id="rfc.section.5.p.1">The security objectives of STuPiD are to be as secure as if NAT traversal had succeeded, i.e., an on-path attacker can overhear and fake messages, but an off-path attacker cannot.  If a higher level of security is desired, it should be provided on top of the data relayed by STuPiD, e.g. by using XTLS <a href="#I-D.meyer-xmpp-e2e-encryption">[I-D.meyer-xmpp-e2e-encryption]</a>.</p>
+<p id="rfc.section.5.p.2">Much of the security of STuPiD is based on the assumption that an off-path attacker cannot guess the chunk identifiers.  A suitable source of randomness <a href="#RFC4086">[RFC4086]</a> should be used to generate at least a sufficiently large part of the chunk identifiers (e.g., the chunk identifier could be a hard to guess prefix followed by a serial number).</p>
+<p id="rfc.section.5.p.3">To protect the STuPiD server against denial of service and possibly some forms of theft of service, it is RECOMMENDED that the POST side of the STuPiD server be protected by some form of authentication such as HTTP authentication.  There is little need to protect the GET side.</p>
+<h1 id="rfc.references"><a href="#rfc.references">6.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">6.1.</a> Normative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="RFC2119">[RFC2119]</b>
+      </td>
+      <td class="top"><a href="mailto:sob@harvard.edu" title="Harvard University">Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, March 1997.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC3986">[RFC3986]</b>
+      </td>
+      <td class="top"><a href="mailto:timbl@w3.org" title="World Wide Web Consortium">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com" title="Day Software">Fielding, R.</a> and <a href="mailto:LMM@acm.org" title="Adobe Systems Incorporated">L. Masinter</a>, "<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>", STD 66, RFC 3986, January 2005.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC4086">[RFC4086]</b>
+      </td>
+      <td class="top"><a>Eastlake, D.</a>, <a>Schiller, J.</a> and <a>S. Crocker</a>, "<a href="http://tools.ietf.org/html/rfc4086">Randomness Requirements for Security</a>", BCP 106, RFC 4086, June 2005.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC4648">[RFC4648]</b>
+      </td>
+      <td class="top"><a>Josefsson, S.</a>, "<a href="http://tools.ietf.org/html/rfc4648">The Base16, Base32, and Base64 Data Encodings</a>", RFC 4648, October 2006.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">6.2.</a> Informative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="I-D.ietf-behave-turn">[I-D.ietf-behave-turn]</b>
+      </td>
+      <td class="top"><a>Rosenberg, J.</a>, <a>Mahy, R.</a> and <a>P. Matthews</a>, "<a href="http://tools.ietf.org/html/draft-ietf-behave-turn-16">Traversal Using Relays around NAT (TURN): Relay Extensions to Session Traversal Utilities for NAT (STUN)</a>", Internet-Draft draft-ietf-behave-turn-16, July 2009.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="I-D.ietf-xmpp-3920bis">[I-D.ietf-xmpp-3920bis]</b>
+      </td>
+      <td class="top"><a>Saint-Andre, P.</a>, "<a href="http://tools.ietf.org/html/draft-ietf-xmpp-3920bis-22">Extensible Messaging and Presence Protocol (XMPP): Core</a>", Internet-Draft draft-ietf-xmpp-3920bis-22, December 2010.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="I-D.meyer-xmpp-e2e-encryption">[I-D.meyer-xmpp-e2e-encryption]</b>
+      </td>
+      <td class="top"><a>Meyer, D.</a> and <a>P. Saint-Andre</a>, "<a href="http://tools.ietf.org/html/draft-meyer-xmpp-e2e-encryption-02">XTLS: End-to-End Encryption for the Extensible Messaging and Presence Protocol (XMPP) Using Transport Layer Security (TLS)</a>", Internet-Draft draft-meyer-xmpp-e2e-encryption-02, June 2009.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC5389">[RFC5389]</b>
+      </td>
+      <td class="top"><a>Rosenberg, J.</a>, <a>Mahy, R.</a>, <a>Matthews, P.</a> and <a>D. Wing</a>, "<a href="http://tools.ietf.org/html/rfc5389">Session Traversal Utilities for NAT (STUN)</a>", RFC 5389, October 2008.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="STUNT">[STUNT]</b>
+      </td>
+      <td class="top"><a>Hanson, R.</a>, "<a href="http://deusty.blogspot.com/2007/09/stunt-out-of-band-channels.html">STUNT &amp; out-of-band channels</a>", September 2007.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#xmp" id="xmp">Examples</a></h1>
+<p id="rfc.section.A.p.1">This appendix provides some examples of the STuPiD protocol operation.</p>
+<div id="rfc.figure.2"/>
+<div id="figxmpdisco"/>
+<pre>
+   Request:
+
+      GET /stupid.php HTTP/1.0
+      User-Agent: Example/1.11.4
+      Accept: */*
+      Host: example.org
+      Connection: Keep-Alive
+
+   Response:
+
+      HTTP/1.1 200 OK
+      Date: Sun, 05 Jul 2009 00:30:37 GMT
+      Server: Apache/2.2
+      Cache-Control: no-cache, must-revalidate
+      Expires: Sat, 26 Jul 1997 05:00:00 GMT
+      Vary: Accept-Encoding
+      Content-Length: 17
+      Keep-Alive: timeout=1, max=400
+      Connection: Keep-Alive
+      Content-Type: application/octet-stream
+
+      192.0.2.239:36654
+</pre>
+<p class="figure">Figure 2: Discovering External IP Address and Port</p>
+<div id="rfc.figure.3"/>
+<div id="figxmpstore"/>
+<pre>
+   Request:
+
+      POST /stupid.php?chid=i781hf64-0 HTTP/1.0
+      User-Agent: Example/1.11.4
+      Accept: */*
+      Host: example.org
+      Connection: Keep-Alive
+      Content-Type: application/octet-stream
+      Content-Length: 11
+
+      Hello World
+
+   Response:
+
+      HTTP/1.1 200 OK
+      Date: Sun, 05 Jul 2009 00:20:34 GMT
+      Server: Apache/2.2
+      Cache-Control: no-cache, must-revalidate
+      Expires: Sat, 26 Jul 1997 05:00:00 GMT
+      Vary: Accept-Encoding
+      Content-Length: 0
+      Keep-Alive: timeout=1, max=400
+      Connection: Keep-Alive
+      Content-Type: application/octet-stream
+</pre>
+<p class="figure">Figure 3: Storing Data</p>
+<div id="rfc.figure.4"/>
+<div id="figxmpretr"/>
+<pre>
+   Request:
+
+      GET /stupid.php?chid=i781hf64-0 HTTP/1.0
+      User-Agent: Example/1.11.4
+      Accept: */*
+      Host: example.org
+      Connection: Keep-Alive
+
+   Response:
+
+      HTTP/1.1 200 OK
+      Date: Sun, 05 Jul 2009 00:21:29 GMT
+      Server: Apache/2.2
+      Cache-Control: no-cache, must-revalidate
+      Expires: Sat, 26 Jul 1997 05:00:00 GMT
+      Vary: Accept-Encoding
+      Content-Length: 11
+      Keep-Alive: timeout=1, max=400
+      Connection: Keep-Alive
+      Content-Type: application/octet-stream
+
+      Hello World
+</pre>
+<p class="figure">Figure 4: Retrieving Data</p>
+<h1 id="rfc.appendix.B"><a href="#rfc.appendix.B">Appendix B.</a> <a href="#impl" id="impl">Sample Implementation</a></h1>
+<div id="rfc.figure.5"/>
+<div id="figimpl"/>
+<pre>
+&lt;?php
+header("Cache-Control: no-cache, must-revalidate");
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+header("Content-Type: application/octet-stream");
+
+mysql_connect(localhost, "username", "password");
+mysql_select_db("stupid");
+
+$chid = mysql_real_escape_string($_GET["chid"]);
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+   if (empty($chid)) {
+      echo $_SERVER["REMOTE_ADDR"] . ":" . $_SERVER["REMOTE_PORT"];
+   } elseif ($result = mysql_query("SELECT `data` FROM `Data` " .
+                         "WHERE `chid` = '$chid'")) {
+      if ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+         echo base64_decode($row["data"]);
+      } else {
+         header("HTTP/1.0 404 Not Found");
+      }
+      mysql_free_result($result);
+   } else {
+      header("HTTP/1.0 404 Not Found");
+   }
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+   if (empty($chid)) {
+      header("HTTP/1.0 404 Not Found");
+   } else {
+      mysql_query("DELETE FROM `Data` " .
+                  "WHERE `timestamp` &lt; DATE_SUB(NOW(), INTERVAL 5 MINUTE)");
+      $data = base64_encode(file_get_contents("php://input"));
+      if (!mysql_query("INSERT INTO `Data` (`chid`, `data`) " .
+                       "VALUES ('$chid', '$data')")) {
+         header("HTTP/1.0 403 Bad Request");
+      }
+   }
+} else {
+   header("HTTP/1.0 405 Method Not Allowed");
+   header("Allow: GET, HEAD, POST");
+}
+mysql_close();
+?&gt;
+</pre>
+<p class="figure">Figure 5: STuPiD Sample Implementation</p>
+<h1 id="rfc.appendix.C"><a href="#rfc.appendix.C">Appendix C.</a> <a href="#xmpp" id="xmpp">Using XMPP as Out-Of-Band Channel</a></h1>
+<p id="rfc.section.C.p.1">XMPP <a href="#I-D.ietf-xmpp-3920bis">[I-D.ietf-xmpp-3920bis]</a> is a good choice for an out-of-band channel.</p>
+<p id="rfc.section.C.p.2">The notification protocol is closely modeled after XMPP&#8217;s In-Band Bytestreams (IBB, see http://xmpp.org/extensions/xep-0047.html). Just replace the namespace and insert the STuPiD Retrieval URI instead of the actual Base64 encoded data, see <a href="#figxmpnots">Figure 8</a>.  (Note that the current proposal redundantly sends a sid and a seq as well as the chid composed of these two; it may be possible to optimize this, possibly sending the constant prefix of the URI once at bytestream creation time.)</p>
+<p id="rfc.section.C.p.3">Notifications MUST be processed in the order they are received. If an out-of-sequence notification is received for a particular session (determined by checking the &#8216;seq&#8217; attribute), then this indicates that a notification has been lost. The recipient MUST NOT process such an out-of-sequence notification, nor any that follow it within the same session; instead, the recipient MUST consider the session invalid.  (Adapted from http://xmpp.org/extensions/xep-0047.html#send)</p>
+<p id="rfc.section.C.p.4">Of course, other methods can be used for setup and teardown, such as Jingle (see http://xmpp.org/extensions/xep-0261.html).</p>
+<div id="rfc.figure.6"/>
+<div id="figxmpcri"/>
+<pre>
+      &lt;iq from='romeo@montague.net/orchard'
+          id='jn3h8g65'
+          to='juliet@capulet.com/balcony'
+          type='set'&gt;
+        &lt;open xmlns='urn:xmpp:tmp:stupid'
+              block-size='65536'
+              sid='i781hf64'
+              stanza='iq'/&gt;
+      &lt;/iq&gt;
+</pre>
+<p class="figure">Figure 6: Creating a Bytestream: Initiator requests session</p>
+<div id="rfc.figure.7"/>
+<div id="figxmpcrr"/>
+<pre>
+      &lt;iq from='juliet@capulet.com/balcony'
+          id='jn3h8g65'
+          to='romeo@montague.net/orchard'
+          type='result'/&gt;
+</pre>
+<p class="figure">Figure 7: Creating a Bytestream: Responder accepts session</p>
+<div id="rfc.figure.8"/>
+<div id="figxmpnots"/>
+<pre>
+      &lt;iq from='romeo@montague.net/orchard'
+          id='kr91n475'
+          to='juliet@capulet.com/balcony'
+          type='set'&gt;
+        &lt;data xmlns='urn:xmpp:tmp:stupid'
+              seq='0'
+              sid='i781hf64'
+              url='http://example.org/stupid.php?chid=i781hf64-0'/&gt;
+      &lt;/iq&gt;
+</pre>
+<p class="figure">Figure 8: Sending Notifications: Notification in an IQ stanza</p>
+<div id="rfc.figure.9"/>
+<div id="figxmpnota"/>
+<pre>
+      &lt;iq from='juliet@capulet.com/balcony'
+          id='kr91n475'
+          to='romeo@montague.net/orchard'
+          type='result'/&gt;
+</pre>
+<p class="figure">Figure 9: Sending Notifications: Acknowledging notification using IQ</p>
+<div id="rfc.figure.10"/>
+<div id="figxmpclor"/>
+<pre>
+      &lt;iq from='romeo@montague.net/orchard'
+          id='us71g45j'
+          to='juliet@capulet.com/balcony'
+          type='set'&gt;
+        &lt;close xmlns='urn:xmpp:tmp:stupid'
+               sid='i781hf64'/&gt;
+      &lt;/iq&gt;
+</pre>
+<p class="figure">Figure 10: Closing the Bytestream: Request</p>
+<div id="rfc.figure.11"/>
+<div id="figxmpclos"/>
+<pre>
+      &lt;iq from='juliet@capulet.com/balcony'
+          id='us71g45j'
+          to='romeo@montague.net/orchard'
+          type='result'/&gt;
+</pre>
+<p class="figure">Figure 11: Closing the Bytestream: Success response</p>
+<h1 id="rfc.authors">
+  <a href="#rfc.authors">Authors' Addresses</a>
+</h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Klaus Hartke</span> 
+	  <span class="n hidden">
+		<span class="family-name">Hartke</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Universit&#228;t Bremen TZI</span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:hartke@tzi.org">hartke@tzi.org</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Carsten Bormann</span> 
+	  <span class="n hidden">
+		<span class="family-name">Bormann</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Universit&#228;t Bremen TZI</span>
+	<span class="adr">
+	  <span class="vcardline">Postfach 330440</span>
+
+	  <span class="vcardline">
+		<span class="locality">Bremen</span>,  
+		<span class="region"></span>
+		<span class="code">D-28359</span>
+	  </span>
+	  <span class="country-name vcardline">Germany</span>
+	</span>
+	<span class="vcardline">Phone: +49-421-218-63921</span>
+
+<span class="vcardline">Fax: +49-421-218-7000</span>
+
+<span class="vcardline">EMail: <a href="mailto:cabo@tzi.org">cabo@tzi.org</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>
