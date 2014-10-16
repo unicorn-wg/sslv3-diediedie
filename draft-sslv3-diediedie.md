@@ -1,5 +1,5 @@
 ---
-title: "SSL Version 3.0 Considered Harmful"
+title: Deprecating Secure Sockets Layer Version 3.0
 abbrev: SSLv3 Considered Harmful
 docname: draft-sslv3-must-die-00
 date: 2014-10-20
@@ -23,15 +23,22 @@ author:
 
 
 normative:
+  I-D.ietf-tls-ssl-version3:
+  I-D.ietf-tls-prohibiting-rc4:
   RFC5246:
   RFC6101:
+  RFC7366:
 
 informative:
+  RFC6176:
 
 
 --- abstract
 
-TODO
+Secure Sockets Layer version 3.0 (SSLv3) [[I-D.ietf-tls-ssl-version3]] is no
+longer secure.  SSLv3 should not be used.  The replacement versions, in
+particular Transport Layer Security (TLS) 1.2 [[RFC5246]], are considerably more
+secure and capable protocols.
 
 --- middle
 
@@ -39,11 +46,14 @@ TODO
 
 TODO
 
+# A Litany of Attacks
+
+
+
 # IANA Considerations
 
-TODO
+This document has no IANA actions.
 
 # Security Considerations
 
-TODO
-
+This entire document is about security.
