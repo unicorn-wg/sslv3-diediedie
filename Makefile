@@ -3,6 +3,8 @@
 # https://github.com/cabo/kramdown-rfc2629
 # https://github.com/Juniper/libslax/tree/master/doc/oxtradoc
 # https://tools.ietf.org/tools/idnits/
+# https://www.gnu.org/software/enscript/
+# http://www.ghostscript.com/
 
 xml2rfc ?= xml2rfc
 kramdown-rfc2629 ?= kramdown-rfc2629
@@ -30,7 +32,7 @@ diff_ver := $(draft)-$(current_ver)
 
 .PHONY: latest submit diff clean
 
-latest: $(draft).txt $(draft).html
+latest: $(draft).txt $(draft).html $(draft).pdf
 
 submit: $(next).txt
 
@@ -38,7 +40,7 @@ idnits: $(next).txt
 	$(idnits) $<
 
 clean:
-	-rm -f $(draft).txt $(draft).html index.html
+	-rm -f $(draft).{txt,html,pdf} index.html
 	-rm -f $(addprefix $(draft)-[0-9][0-9].,xml md org html txt)
 	-rm -f *.diff.html
 ifneq (xml,$(draft_type))
@@ -77,6 +79,8 @@ endif
 	$(xml2rfc) $< -o $@ --html
 	$(sed_i) -f lib/addstyle.sed $@
 
+%.pdf: %.txt
+	enscript --margins 76::76: -B -q -p - $^ | ps2pdf - $@
 ### Below this deals with updating gh-pages
 
 GHPAGES_TMP := /tmp/ghpages$(shell echo $$$$)
