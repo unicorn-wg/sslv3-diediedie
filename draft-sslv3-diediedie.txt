@@ -13,10 +13,10 @@ Expires: May 1, 2015                                    October 28, 2014
 
 Abstract
 
-   Secure Sockets Layer version 3.0 (SSLv3) [SSLv3] is no longer secure.
-   This document requires that SSLv3 not be used.  The replacement
-   versions, in particular Transport Layer Security (TLS) 1.2 [RFC5246],
-   are considerably more secure and capable protocols.
+   Secure Sockets Layer version 3.0 (SSLv3) [RFC6101] is no longer
+   secure.  This document requires that SSLv3 not be used.  The
+   replacement versions, in particular Transport Layer Security (TLS)
+   1.2 [RFC5246], are considerably more secure and capable protocols.
 
    This document updates the backward compatibility sections of the TLS
    RFCs to prohibit fallback to SSLv3.
@@ -101,8 +101,8 @@ Table of Contents
    further trivially permits the recovery of plaintext [POODLE].
 
    The flaws in the CBC modes in SSLv3 are mirrored by the weakness of
-   the stream ciphers it defines.  Of those defined in [SSLv3], only RC4
-   is currently in widespread use.  RC4, however, exhibits serious
+   the stream ciphers it defines.  Of those defined in [RFC6101], only
+   RC4 is currently in widespread use.  RC4, however, exhibits serious
    biases and is also no longer fit for use [I-D.ietf-tls-prohibiting-
    rc4].
 
@@ -185,10 +185,6 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
               Security (TLS) and Datagram Transport Layer Security
               (DTLS)", RFC 7366, September 2014.
 
-   [SSLv3]    Freier, A., Karlton, P., and P. Kocher, "The SSL Protocol
-              Version 3.0", November 1996, <https://tools.ietf.org/html/
-              draft-ietf-tls-ssl-version3-00>.
-
 6.2.  Informative References
 
    [FIPS180-2]
@@ -218,6 +214,10 @@ Authors' Addresses
    Mozilla
 
    Email: rlb@ipv.sx
+
+
+
+
 
 
 

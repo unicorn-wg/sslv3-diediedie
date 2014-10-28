@@ -470,8 +470,8 @@ ul.toc a:first-child {
   <meta name="dct.creator" content="Barnes, R. and M. Thomson" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-sslv3-must-die-00" />
   <meta name="dct.issued" scheme="ISO8601" content="2014-10-28" />
-  <meta name="dct.abstract" content="Secure Sockets Layer version 3.0 (SSLv3) [SSLv3] is no longer secure.  This document requires that SSLv3 not be used.  The replacement versions, in particular Transport Layer Security (TLS) 1.2 [RFC5246], are considerably more secure and capable protocols." />
-  <meta name="description" content="Secure Sockets Layer version 3.0 (SSLv3) [SSLv3] is no longer secure.  This document requires that SSLv3 not be used.  The replacement versions, in particular Transport Layer Security (TLS) 1.2 [RFC5246], are considerably more secure and capable protocols." />
+  <meta name="dct.abstract" content="Secure Sockets Layer version 3.0 (SSLv3) [RFC6101] is no longer secure.  This document requires that SSLv3 not be used.  The replacement versions, in particular Transport Layer Security (TLS) 1.2 [RFC5246], are considerably more secure and capable protocols." />
+  <meta name="description" content="Secure Sockets Layer version 3.0 (SSLv3) [RFC6101] is no longer secure.  This document requires that SSLv3 not be used.  The replacement versions, in particular Transport Layer Security (TLS) 1.2 [RFC5246], are considerably more secure and capable protocols." />
 
 </head>
 
@@ -507,7 +507,7 @@ ul.toc a:first-child {
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>Secure Sockets Layer version 3.0 (SSLv3) [SSLv3] is no longer secure.  This document requires that SSLv3 not be used.  The replacement versions, in particular Transport Layer Security (TLS) 1.2 [RFC5246], are considerably more secure and capable protocols.</p>
+<p>Secure Sockets Layer version 3.0 (SSLv3) [RFC6101] is no longer secure.  This document requires that SSLv3 not be used.  The replacement versions, in particular Transport Layer Security (TLS) 1.2 [RFC5246], are considerably more secure and capable protocols.</p>
 <p>This document updates the backward compatibility sections of the TLS RFCs to prohibit fallback to SSLv3.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
@@ -547,7 +547,7 @@ ul.toc a:first-child {
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#a-litany-of-attacks" id="a-litany-of-attacks">A Litany of Attacks</a></h1>
 <p id="rfc.section.2.p.1">The cipher block chaining (CBC) modes of SSLv3 use a flawed MAC-then-encrypt construction that has subsequently been replaced in TLS versions [RFC7366].  Unfortunately, the mechanism to correct this flaw relies on extensions: a feature added in TLS 1.0.  SSLv3 cannot be updated to correct this flaw.</p>
 <p id="rfc.section.2.p.2">The non-deterministic padding using the CBC construction in SSLv3 further trivially permits the recovery of plaintext [POODLE].</p>
-<p id="rfc.section.2.p.3">The flaws in the CBC modes in SSLv3 are mirrored by the weakness of the stream ciphers it defines.  Of those defined in [SSLv3], only RC4 is currently in widespread use.  RC4, however, exhibits serious biases and is also no longer fit for use [I-D.ietf-tls-prohibiting-rc4].</p>
+<p id="rfc.section.2.p.3">The flaws in the CBC modes in SSLv3 are mirrored by the weakness of the stream ciphers it defines.  Of those defined in [RFC6101], only RC4 is currently in widespread use.  RC4, however, exhibits serious biases and is also no longer fit for use [I-D.ietf-tls-prohibiting-rc4].</p>
 <p id="rfc.section.2.p.4">SSLv3 also relies on SHA-1 [RFC3174] and MD5 [RFC1321] for integrity and its fundamental pseudorandom function.  These hash algorithms are considered weak and are being systematically replaced with stronger hash functions, such as SHA-256 [FIPS180-2].</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#limited-capabilities" id="limited-capabilities">Limited Capabilities</a></h1>
 <p id="rfc.section.3.p.1">SSLv3 is unable to take advantage of the many features that have been added to recent TLS versions.  This includes the features that are enabled by ClientHello extensions, which SSLv3 does not support.</p>
@@ -614,12 +614,6 @@ ul.toc a:first-child {
         <b id="RFC7366">[RFC7366]</b>
       </td>
       <td class="top"><a>Gutmann, P.</a>, "<a href="http://tools.ietf.org/html/rfc7366">Encrypt-then-MAC for Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)</a>", RFC 7366, September 2014.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="SSLv3">[SSLv3]</b>
-      </td>
-      <td class="top"><a>Freier, A.</a>, <a>Karlton, P.</a> and <a>P. Kocher</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-ssl-version3-00">The SSL Protocol Version 3.0</a>", November 1996.</td>
     </tr>
   </tbody>
 </table>
