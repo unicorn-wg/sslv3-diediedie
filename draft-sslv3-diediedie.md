@@ -23,21 +23,7 @@ author:
 
 
 normative:
-  SSLv3:
-    target: https://tools.ietf.org/html/draft-ietf-tls-ssl-version3-00
-    title: The SSL Protocol Version 3.0
-    author:
-      -
-        name: Alan O. Freier
-        ins: A. Freier
-      -
-        name: Philip Karlton
-        ins: P. Karlton
-      -
-        name: Paul C. Kocher
-        ins: P. Kocher
-    date: 1996-11-18
-
+  RFC6101:
   I-D.ietf-tls-prohibiting-rc4:
   RFC2119:
   RFC2246:
@@ -72,7 +58,7 @@ informative:
 
 
 
-Secure Sockets Layer version 3.0 (SSLv3) [SSLv3] is no longer secure.  This
+Secure Sockets Layer version 3.0 (SSLv3) [RFC6101] is no longer secure.  This
 document requires that SSLv3 not be used.  The replacement versions, in
 particular Transport Layer Security (TLS) 1.2 [RFC5246], are considerably more
 secure and capable protocols.
@@ -108,7 +94,7 @@ The non-deterministic padding using the CBC construction in SSLv3 further
 trivially permits the recovery of plaintext [POODLE].
 
 The flaws in the CBC modes in SSLv3 are mirrored by the weakness of the stream
-ciphers it defines.  Of those defined in [SSLv3], only RC4 is currently in
+ciphers it defines.  Of those defined in [RFC6101], only RC4 is currently in
 widespread use.  RC4, however, exhibits serious biases and is also no longer fit
 for use [I-D.ietf-tls-prohibiting-rc4].
 
