@@ -5,6 +5,7 @@ docname: draft-sslv3-diediedie-00
 date: 2014-10
 category: bcp
 ipr: trust200902
+updates: 5246
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs]
@@ -59,20 +60,6 @@ informative:
       name: Marsh Ray
       ins: M. Ray
     date: 2009
-  SESSION-HASH:
-    title: "Transport Layer Security (TLS) Session Hash and Extended Master Secret Extension"
-    author:
-      -
-        ins: K. Bhargavan
-      -
-        ins: A. Delignat-Lavaud
-      -
-        ins: A. Pironti
-      -
-        ins: A. Langley
-      -
-        ins: M. Ray
-    date: 2014-10-06
   TRIPLE-HS:
     title: "Triple Handshakes and Cookie Cutters: Breaking and Fixing Authentication over TLS"
     author:
@@ -99,9 +86,6 @@ informative:
     seriesinfo:
       IEEE: "Symposium on Security and Privacy"
     date: 2014
-
---- abstract
-
 
 
 --- abstract
