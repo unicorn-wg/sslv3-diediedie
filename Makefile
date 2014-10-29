@@ -30,9 +30,12 @@ endif
 next := $(draft)-$(next_ver)
 diff_ver := $(draft)-$(current_ver)
 
-.PHONY: latest submit diff clean
+.PHONY: latest txt html pdf submit diff clean
 
-latest: $(draft).txt $(draft).html $(draft).pdf
+latest: txt html
+txt: $(draft).txt
+html: $(draft).html
+pdf: $(draft).pdf 
 
 submit: $(next).txt
 
