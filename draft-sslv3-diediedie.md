@@ -36,6 +36,7 @@ normative:
 informative:
   RFC1321:
   RFC3174:
+  RFC5077:
   RFC6176:
   RFC6347:
   FIPS180-2:
@@ -51,8 +52,38 @@ informative:
       name: Bodo Moeller
       ins: B. Moeller
     date: 2014-10-14
-
-
+  Ray09:
+    title: "Authentication Gap in TLS Renegotiation"
+    author:
+      name: Marsh Ray
+      ins: M. Ray
+    date: 2009
+  TRIPLE-HS:
+    title: "Triple Handshakes and Cookie Cutters: Breaking and Fixing Authentication over TLS"
+    author:
+      -
+        name: Karthikeyan Bhargavan
+        ins: K. Bhargavan
+        org: INRIA
+      -
+        name: Antoine Delignat-Lavaud
+        ins: A. Delignat-Lavaud
+        org: INRIA
+      -
+        name: Cédric Fournet
+        ins: C. Fournet
+        org: Microsoft Research
+      -
+        name: Alfredo Pironti
+        ins: A. Pironti
+        org: INRIA
+      -
+        name: Pierre-Yves Strub
+        ins: P-Y. Strub
+        org: IMDEA
+    seriesinfo:
+      IEEE: "Symposium on Security and Privacy"
+    date: 2014
 
 --- abstract
 
@@ -70,12 +101,12 @@ prohibit fallback to SSLv3.
 
 # Introduction
 
-The SSLv3 handshake has been subject to a long series of attacks, as well as
-gradual weakening of the cipher suites it supports since it was released in
-1996.  Despite being replaced by TLS 1.0 [RFC2246] in 1999, and subsequently TLS
-1.1 in 2002 [RFC4346] and 1.2 in 2006 [RFC5246], availability of these
-replacement versions has not been universal.  As a result, many implementations
-of TLS have permitted the negotiation of SSLv3.
+The SSLv3 protocol has been subject to a long series of attacks, both on its
+key exchange mechanism and on the encryption schemes it supports since it was
+released in 1996.  Despite being replaced by TLS 1.0 [RFC2246] in 1999, and
+subsequently TLS 1.1 in 2002 [RFC4346] and 1.2 in 2006 [RFC5246], availability
+of these replacement versions has not been universal.  As a result, many
+implementations of TLS have permitted the negotiation of SSLv3.
 
 The predecessor of SSLv3, SSL version 2, is no longer considered secure
 [RFC6176].  SSLv3 now follows.
@@ -85,12 +116,14 @@ MUST NOT be permitted.
 
 # A Litany of Attacks
 
+## Record Layer
+
 The cipher block chaining (CBC) modes of SSLv3 use a flawed MAC-then-encrypt
 construction that has subsequently been replaced in TLS versions [RFC7366].
 Unfortunately, the mechanism to correct this flaw relies on extensions: a
 feature added in TLS 1.0.  SSLv3 cannot be updated to correct this flaw.
 
-The non-deterministic padding using the CBC construction in SSLv3 further
+The non-deterministic padding used in the CBC construction of SSLv3 further
 trivially permits the recovery of plaintext [POODLE].
 
 The flaws in the CBC modes in SSLv3 are mirrored by the weakness of the stream
@@ -98,10 +131,24 @@ ciphers it defines.  Of those defined in [RFC6101], only RC4 is currently in
 widespread use.  RC4, however, exhibits serious biases and is also no longer fit
 for use [I-D.ietf-tls-prohibiting-rc4].
 
-SSLv3 also relies on SHA-1 [RFC3174] and MD5 [RFC1321] for integrity and its
-fundamental pseudorandom function.  These hash algorithms are considered weak
-and are being systematically replaced with stronger hash functions, such as
-SHA-256 [FIPS180-2].
+This leaves SSLv3 with no widely deployed suitable symmetric encryption
+algorithm to be possibly selected.
+
+## Key Exchange
+
+The SSLv3 key exchange is vulnerable to man-in-the-middle attacks when
+renegotiation [Ray09] or session resumption [TRIPLE-HS] are used.
+Each flaw has been fixed in TLS by means of extensions. Again,
+SSLv3 cannot be updated to correct these flaws.
+
+## Custom Cryptographic Primitives
+
+SSLv3 defines custom constructions for PRF, HMAC and digital signature
+primitives.  Such constructions lack the deep cryptographic scrutiny that
+standard constructions used by TLS have received.  Furthermore, all SSLv3
+primitives rely on SHA-1 [RFC3174] and MD5 [RFC1321]: these hash algorithms
+are considered weak and are being systematically replaced with stronger hash
+functions, such as SHA-256 [FIPS180-2].
 
 # Limited Capabilities
 
@@ -116,10 +163,11 @@ prominent:
   [RFC5246].
 
 * Elliptic Curve Diffie-Hellman (ECDH) and Digital Signature Algorithm (ECDSA)
-  were added in [RFC4492].
+  are added in [RFC4492].
 
 Though there are many other features that are not supported, including a
-datagram mode of operation [RFC6347].
+datagram mode of operation [RFC6347], and server-side stateless session
+resumption [RFC5077].
 
 # IANA Considerations
 
