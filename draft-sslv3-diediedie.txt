@@ -65,23 +65,26 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  A Litany of Attacks . . . . . . . . . . . . . . . . . . . . .   2
+     2.1.  Record Layer  . . . . . . . . . . . . . . . . . . . . . .   2
+     2.2.  Key Exchange  . . . . . . . . . . . . . . . . . . . . . .   3
+     2.3.  Custom Cryptographic Primitives . . . . . . . . . . . . .   3
    3.  Limited Capabilities  . . . . . . . . . . . . . . . . . . . .   3
-   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   3
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
-   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   3
-     6.1.  Normative References  . . . . . . . . . . . . . . . . . .   3
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     6.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
      6.2.  Informative References  . . . . . . . . . . . . . . . . .   4
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   4
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
 
 1.  Introduction
 
-   The SSLv3 handshake has been subject to a long series of attacks, as
-   well as gradual weakening of the cipher suites it supports since it
-   was released in 1996.  Despite being replaced by TLS 1.0 [RFC2246] in
-   1999, and subsequently TLS 1.1 in 2002 [RFC4346] and 1.2 in 2006
-   [RFC5246], availability of these replacement versions has not been
-   universal.  As a result, many implementations of TLS have permitted
-   the negotiation of SSLv3.
+   The SSLv3 protocol has been subject to a long series of attacks, both
+   on its key exchange mechanism and on the encryption schemes it
+   supports since it was released in 1996.  Despite being replaced by
+   TLS 1.0 [RFC2246] in 1999, and subsequently TLS 1.1 in 2002 [RFC4346]
+   and 1.2 in 2006 [RFC5246], availability of these replacement versions
+   has not been universal.  As a result, many implementations of TLS
+   have permitted the negotiation of SSLv3.
 
    The predecessor of SSLv3, SSL version 2, is no longer considered
    secure [RFC6176].  SSLv3 now follows.
@@ -91,20 +94,17 @@ Table of Contents
 
 2.  A Litany of Attacks
 
+2.1.  Record Layer
+
    The cipher block chaining (CBC) modes of SSLv3 use a flawed MAC-then-
    encrypt construction that has subsequently been replaced in TLS
    versions [RFC7366].  Unfortunately, the mechanism to correct this
    flaw relies on extensions: a feature added in TLS 1.0.  SSLv3 cannot
    be updated to correct this flaw.
 
-   The non-deterministic padding using the CBC construction in SSLv3
+   The non-deterministic padding used in the CBC construction of SSLv3
    further trivially permits the recovery of plaintext [POODLE].
 
-   The flaws in the CBC modes in SSLv3 are mirrored by the weakness of
-   the stream ciphers it defines.  Of those defined in [RFC6101], only
-   RC4 is currently in widespread use.  RC4, however, exhibits serious
-   biases and is also no longer fit for use [I-D.ietf-tls-prohibiting-
-   rc4].
 
 
 
@@ -114,10 +114,31 @@ Barnes & Thomson           Expires May 2, 2015                  [Page 2]
 Internet-Draft          SSLv3 Considered Harmful            October 2014
 
 
-   SSLv3 also relies on SHA-1 [RFC3174] and MD5 [RFC1321] for integrity
-   and its fundamental pseudorandom function.  These hash algorithms are
-   considered weak and are being systematically replaced with stronger
-   hash functions, such as SHA-256 [FIPS180-2].
+   The flaws in the CBC modes in SSLv3 are mirrored by the weakness of
+   the stream ciphers it defines.  Of those defined in [RFC6101], only
+   RC4 is currently in widespread use.  RC4, however, exhibits serious
+   biases and is also no longer fit for use [I-D.ietf-tls-prohibiting-
+   rc4].
+
+   This leaves SSLv3 with no widely deployed suitable symmetric
+   encryption algorithm to be possibly selected.
+
+2.2.  Key Exchange
+
+   The SSLv3 key exchange is vulnerable to man-in-the-middle attacks
+   when renegotiation [Ray09] or session resumption [TRIPLE-HS] are
+   used.  Each flaw has been fixed in TLS by means of extensions.
+   Again, SSLv3 cannot be updated to correct these flaws.
+
+2.3.  Custom Cryptographic Primitives
+
+   SSLv3 defines custom constructions for PRF, HMAC and digital
+   signature primitives.  Such constructions lack the deep cryptographic
+   scrutiny that standard constructions used by TLS have received.
+   Furthermore, all SSLv3 primitives rely on SHA-1 [RFC3174] and MD5
+   [RFC1321]: these hash algorithms are considered weak and are being
+   systematically replaced with stronger hash functions, such as SHA-256
+   [FIPS180-2].
 
 3.  Limited Capabilities
 
@@ -132,10 +153,22 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
       added in [RFC5246].
 
    o  Elliptic Curve Diffie-Hellman (ECDH) and Digital Signature
-      Algorithm (ECDSA) were added in [RFC4492].
+      Algorithm (ECDSA) are added in [RFC4492].
 
    Though there are many other features that are not supported,
-   including a datagram mode of operation [RFC6347].
+   including a datagram mode of operation [RFC6347], and server-side
+   stateless session resumption [RFC5077].
+
+
+
+
+
+
+
+Barnes & Thomson           Expires May 2, 2015                  [Page 3]
+
+Internet-Draft          SSLv3 Considered Harmful            October 2014
+
 
 4.  IANA Considerations
 
@@ -163,13 +196,6 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
    [RFC4346]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.1", RFC 4346, April 2006.
 
-
-
-Barnes & Thomson           Expires May 2, 2015                  [Page 3]
-
-Internet-Draft          SSLv3 Considered Harmful            October 2014
-
-
    [RFC4492]  Blake-Wilson, S., Bolyard, N., Gupta, V., Hawk, C., and B.
               Moeller, "Elliptic Curve Cryptography (ECC) Cipher Suites
               for Transport Layer Security (TLS)", RFC 4492, May 2006.
@@ -191,6 +217,15 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
               Department of Commerce, National., "NIST FIPS 180-2,
               Secure Hash Standard", August 2002.
 
+
+
+
+
+Barnes & Thomson           Expires May 2, 2015                  [Page 4]
+
+Internet-Draft          SSLv3 Considered Harmful            October 2014
+
+
    [POODLE]   Moeller, B., "This POODLE bites: exploiting the SSL 3.0
               fallback", October 2014,
               <http://googleonlinesecurity.blogspot.com/2014/10/
@@ -202,11 +237,23 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
    [RFC3174]  Eastlake, D. and P. Jones, "US Secure Hash Algorithm 1
               (SHA1)", RFC 3174, September 2001.
 
+   [RFC5077]  Salowey, J., Zhou, H., Eronen, P., and H. Tschofenig,
+              "Transport Layer Security (TLS) Session Resumption without
+              Server-Side State", RFC 5077, January 2008.
+
    [RFC6176]  Turner, S. and T. Polk, "Prohibiting Secure Sockets Layer
               (SSL) Version 2.0", RFC 6176, March 2011.
 
    [RFC6347]  Rescorla, E. and N. Modadugu, "Datagram Transport Layer
               Security Version 1.2", RFC 6347, January 2012.
+
+   [Ray09]    Ray, M., "Authentication Gap in TLS Renegotiation", 2009.
+
+   [TRIPLE-HS]
+              Bhargavan, K., Delignat-Lavaud, A., Fournet, C., Pironti,
+              A., and P-Y. Strub, "Triple Handshakes and Cookie Cutters:
+              Breaking and Fixing Authentication over TLS", IEEE
+              Symposium on Security and Privacy, 2014.
 
 Authors' Addresses
 
@@ -216,57 +263,10 @@ Authors' Addresses
    Email: rlb@ipv.sx
 
 
-
-
-
-
-
-Barnes & Thomson           Expires May 2, 2015                  [Page 4]
-
-Internet-Draft          SSLv3 Considered Harmful            October 2014
-
-
    Martin Thomson
    Mozilla
 
    Email: martin.thomson@gmail.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

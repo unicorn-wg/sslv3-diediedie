@@ -455,6 +455,9 @@ ul.toc a:first-child {
   <link href="#rfc.toc" rel="Contents"/>
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
 <link href="#rfc.section.2" rel="Chapter" title="2 A Litany of Attacks"/>
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Record Layer"/>
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Key Exchange"/>
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Custom Cryptographic Primitives"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Limited Capabilities"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
@@ -529,6 +532,9 @@ ul.toc a:first-child {
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
 <li>2.   <a href="#rfc.section.2">A Litany of Attacks</a></li>
+<li>2.1.   <a href="#rfc.section.2.1">Record Layer</a></li>
+<li>2.2.   <a href="#rfc.section.2.2">Key Exchange</a></li>
+<li>2.3.   <a href="#rfc.section.2.3">Custom Cryptographic Primitives</a></li>
 <li>3.   <a href="#rfc.section.3">Limited Capabilities</a></li>
 <li>4.   <a href="#rfc.section.4">IANA Considerations</a></li>
 <li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
@@ -541,14 +547,19 @@ ul.toc a:first-child {
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">The SSLv3 handshake has been subject to a long series of attacks, as well as gradual weakening of the cipher suites it supports since it was released in 1996.  Despite being replaced by TLS 1.0 [RFC2246] in 1999, and subsequently TLS 1.1 in 2002 [RFC4346] and 1.2 in 2006 [RFC5246], availability of these replacement versions has not been universal.  As a result, many implementations of TLS have permitted the negotiation of SSLv3.</p>
+<p id="rfc.section.1.p.1">The SSLv3 protocol has been subject to a long series of attacks, both on its key exchange mechanism and on the encryption schemes it supports since it was released in 1996.  Despite being replaced by TLS 1.0 [RFC2246] in 1999, and subsequently TLS 1.1 in 2002 [RFC4346] and 1.2 in 2006 [RFC5246], availability of these replacement versions has not been universal.  As a result, many implementations of TLS have permitted the negotiation of SSLv3.</p>
 <p id="rfc.section.1.p.2">The predecessor of SSLv3, SSL version 2, is no longer considered secure [RFC6176].  SSLv3 now follows.</p>
 <p id="rfc.section.1.p.3">SSLv3 MUST NOT be used [RFC2119].  Negotiation of SSLv3 from any version of TLS MUST NOT be permitted.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#a-litany-of-attacks" id="a-litany-of-attacks">A Litany of Attacks</a></h1>
-<p id="rfc.section.2.p.1">The cipher block chaining (CBC) modes of SSLv3 use a flawed MAC-then-encrypt construction that has subsequently been replaced in TLS versions [RFC7366].  Unfortunately, the mechanism to correct this flaw relies on extensions: a feature added in TLS 1.0.  SSLv3 cannot be updated to correct this flaw.</p>
-<p id="rfc.section.2.p.2">The non-deterministic padding using the CBC construction in SSLv3 further trivially permits the recovery of plaintext [POODLE].</p>
-<p id="rfc.section.2.p.3">The flaws in the CBC modes in SSLv3 are mirrored by the weakness of the stream ciphers it defines.  Of those defined in [RFC6101], only RC4 is currently in widespread use.  RC4, however, exhibits serious biases and is also no longer fit for use [I-D.ietf-tls-prohibiting-rc4].</p>
-<p id="rfc.section.2.p.4">SSLv3 also relies on SHA-1 [RFC3174] and MD5 [RFC1321] for integrity and its fundamental pseudorandom function.  These hash algorithms are considered weak and are being systematically replaced with stronger hash functions, such as SHA-256 [FIPS180-2].</p>
+<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#record-layer" id="record-layer">Record Layer</a></h1>
+<p id="rfc.section.2.1.p.1">The cipher block chaining (CBC) modes of SSLv3 use a flawed MAC-then-encrypt construction that has subsequently been replaced in TLS versions [RFC7366].  Unfortunately, the mechanism to correct this flaw relies on extensions: a feature added in TLS 1.0.  SSLv3 cannot be updated to correct this flaw.</p>
+<p id="rfc.section.2.1.p.2">The non-deterministic padding used in the CBC construction of SSLv3 further trivially permits the recovery of plaintext [POODLE].</p>
+<p id="rfc.section.2.1.p.3">The flaws in the CBC modes in SSLv3 are mirrored by the weakness of the stream ciphers it defines.  Of those defined in [RFC6101], only RC4 is currently in widespread use.  RC4, however, exhibits serious biases and is also no longer fit for use [I-D.ietf-tls-prohibiting-rc4].</p>
+<p id="rfc.section.2.1.p.4">This leaves SSLv3 with no widely deployed suitable symmetric encryption algorithm to be possibly selected.</p>
+<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#key-exchange" id="key-exchange">Key Exchange</a></h1>
+<p id="rfc.section.2.2.p.1">The SSLv3 key exchange is vulnerable to man-in-the-middle attacks when renegotiation [Ray09] or session resumption [TRIPLE-HS] are used.  Each flaw has been fixed in TLS by means of extensions. Again, SSLv3 cannot be updated to correct these flaws.</p>
+<h1 id="rfc.section.2.3"><a href="#rfc.section.2.3">2.3.</a> <a href="#custom-cryptographic-primitives" id="custom-cryptographic-primitives">Custom Cryptographic Primitives</a></h1>
+<p id="rfc.section.2.3.p.1">SSLv3 defines custom constructions for PRF, HMAC and digital signature primitives.  Such constructions lack the deep cryptographic scrutiny that standard constructions used by TLS have received.  Furthermore, all SSLv3 primitives rely on SHA-1 [RFC3174] and MD5 [RFC1321]: these hash algorithms are considered weak and are being systematically replaced with stronger hash functions, such as SHA-256 [FIPS180-2].</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#limited-capabilities" id="limited-capabilities">Limited Capabilities</a></h1>
 <p id="rfc.section.3.p.1">SSLv3 is unable to take advantage of the many features that have been added to recent TLS versions.  This includes the features that are enabled by ClientHello extensions, which SSLv3 does not support.</p>
 <p id="rfc.section.3.p.2">SSLv3 also cannot benefit from new cryptographic modes.  Of these, two are prominent:</p>
@@ -556,9 +567,9 @@ ul.toc a:first-child {
 
 <ul>
   <li>Authenticated Encryption with Additional Data (AEAD) modes are added in [RFC5246].</li>
-  <li>Elliptic Curve Diffie-Hellman (ECDH) and Digital Signature Algorithm (ECDSA) were added in [RFC4492].</li>
+  <li>Elliptic Curve Diffie-Hellman (ECDH) and Digital Signature Algorithm (ECDSA) are added in [RFC4492].</li>
 </ul>
-<p id="rfc.section.3.p.4">Though there are many other features that are not supported, including a datagram mode of operation [RFC6347].</p>
+<p id="rfc.section.3.p.4">Though there are many other features that are not supported, including a datagram mode of operation [RFC6347], and server-side stateless session resumption [RFC5077].</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
 <p id="rfc.section.4.p.1">This document has no IANA actions.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
@@ -646,6 +657,12 @@ ul.toc a:first-child {
     </tr>
     <tr>
       <td class="reference">
+        <b id="RFC5077">[RFC5077]</b>
+      </td>
+      <td class="top"><a>Salowey, J.</a>, <a>Zhou, H.</a>, <a>Eronen, P.</a> and <a>H. Tschofenig</a>, "<a href="http://tools.ietf.org/html/rfc5077">Transport Layer Security (TLS) Session Resumption without Server-Side State</a>", RFC 5077, January 2008.</td>
+    </tr>
+    <tr>
+      <td class="reference">
         <b id="RFC6176">[RFC6176]</b>
       </td>
       <td class="top"><a>Turner, S.</a> and <a>T. Polk</a>, "<a href="http://tools.ietf.org/html/rfc6176">Prohibiting Secure Sockets Layer (SSL) Version 2.0</a>", RFC 6176, March 2011.</td>
@@ -655,6 +672,18 @@ ul.toc a:first-child {
         <b id="RFC6347">[RFC6347]</b>
       </td>
       <td class="top"><a>Rescorla, E.</a> and <a>N. Modadugu</a>, "<a href="http://tools.ietf.org/html/rfc6347">Datagram Transport Layer Security Version 1.2</a>", RFC 6347, January 2012.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="Ray09">[Ray09]</b>
+      </td>
+      <td class="top"><a>Ray, M.</a>, "<a>Authentication Gap in TLS Renegotiation</a>", 2009.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="TRIPLE-HS">[TRIPLE-HS]</b>
+      </td>
+      <td class="top"><a title="INRIA">Bhargavan, K.</a>, <a title="INRIA">Delignat-Lavaud, A.</a>, <a title="Microsoft Research">Fournet, C.</a>, <a title="INRIA">Pironti, A.</a> and <a title="IMDEA">P-Y. Strub</a>, "<a>Triple Handshakes and Cookie Cutters: Breaking and Fixing Authentication over TLS</a>", IEEE Symposium on Security and Privacy, 2014.</td>
     </tr>
   </tbody>
 </table>
