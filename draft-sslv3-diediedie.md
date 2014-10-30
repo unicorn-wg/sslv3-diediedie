@@ -124,10 +124,9 @@ accept SSLv3 handshakes from old clients.
 
 ## Record Layer
 
-The non-deterministic padding used in the CBC construction of SSLv3 further
-trivially permits the recovery of plaintext {{POODLE}}.
-
-The cipher block chaining (CBC) modes of SSLv3 use a flawed MAC-then-encrypt
+The non-deterministic padding used in the CBC construction of SSLv3
+trivially permits the recovery of plaintext {{POODLE}}. More generally,
+the cipher block chaining (CBC) modes of SSLv3 use a flawed MAC-then-encrypt
 construction that has subsequently been replaced in TLS versions {{RFC7366}}.
 Unfortunately, the mechanism to correct this flaw relies on extensions: a
 feature added in TLS 1.0.  SSLv3 cannot be updated to correct this flaw in the
