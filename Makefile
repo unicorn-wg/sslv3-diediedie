@@ -1,16 +1,37 @@
-# In case your system doesn't have any of these tools:
-# https://pypi.python.org/pypi/xml2rfc
-# https://github.com/cabo/kramdown-rfc2629
-# https://github.com/Juniper/libslax/tree/master/doc/oxtradoc
-# https://tools.ietf.org/tools/idnits/
-# https://www.gnu.org/software/enscript/
-# http://www.ghostscript.com/
+# Original makefile from https://github.com/martinthomson/i-d-template
 
+# The following tools are used by this file.
+# All are assumed to be on the path, but you can override these
+# in the environment, or command line.
+
+# Mandatory:
+#   https://pypi.python.org/pypi/xml2rfc
 xml2rfc ?= xml2rfc
+
+# If you are using markdown files:
+#   https://github.com/cabo/kramdown-rfc2629
 kramdown-rfc2629 ?= kramdown-rfc2629
+
+# If you are using outline files:
+#   https://github.com/Juniper/libslax/tree/master/doc/oxtradoc
 oxtradoc ?= oxtradoc.in
+
+# For sanity checkout your draft:
+#   https://tools.ietf.org/tools/idnits/
 idnits ?= idnits
+
+# For diff:
+#   https://tools.ietf.org/tools/rfcdiff/
 rfcdiff ?= rfcdiff --browse
+
+# For generating PDF:
+#   https://www.gnu.org/software/enscript/
+enscript ?= enscript
+#   http://www.ghostscript.com/
+ps2pdf ?= ps2pdf 
+
+
+## Work out what to build
 
 draft := $(basename $(lastword $(sort $(wildcard draft-*.xml)) $(sort $(wildcard draft-*.org)) $(sort $(wildcard draft-*.md))))
 
@@ -30,12 +51,15 @@ endif
 next := $(draft)-$(next_ver)
 diff_ver := $(draft)-$(current_ver)
 
-.PHONY: latest txt html pdf submit diff clean
+
+## Targets
+
+.PHONY: latest txt html pdf submit diff clean update ghpages
 
 latest: txt html
 txt: $(draft).txt
 html: $(draft).html
-pdf: $(draft).pdf 
+pdf: $(draft).pdf
 
 submit: $(next).txt
 
@@ -44,11 +68,13 @@ idnits: $(next).txt
 
 clean:
 	-rm -f $(draft).{txt,html,pdf} index.html
-	-rm -f $(addprefix $(draft)-[0-9][0-9].,xml md org html txt)
+	-rm -f $(draft)-[0-9][0-9].{xml,md,org,txt,html,pdf}
 	-rm -f *.diff.html
 ifneq (xml,$(draft_type))
 	-rm -f $(draft).xml
 endif
+
+## diff
 
 $(next).xml: $(draft).xml
 	sed -e"s/$(basename $<)-latest/$(basename $@)/" $< > $@
@@ -62,6 +88,8 @@ $(draft)-$(current_ver)$(draft_type):
 	git show $(draft)-$(current_ver):$(draft)$(draft_type) > $@
 endif
 
+## Recipes
+
 .INTERMEDIATE: $(draft).xml
 %.xml: %.md
 	$(kramdown-rfc2629) $< > $@
@@ -72,22 +100,42 @@ endif
 %.txt: %.xml
 	$(xml2rfc) $< -o $@ --text
 
-ifeq (Darwin, $(shell uname -s 2>/dev/null))
-sed_i := sed -i ''
-else
-sed_i := sed -i
-endif
-
-%.html: %.xml
+%.htmltmp: %.xml
 	$(xml2rfc) $< -o $@ --html
-	$(sed_i) -f lib/addstyle.sed $@
+%.html: %.htmltmp
+	sed -f lib/addstyle.sed $@ > $<
 
 %.pdf: %.txt
-	enscript --margins 76::76: -B -q -p - $^ | ps2pdf - $@
-### Below this deals with updating gh-pages
+	$(enscript) --margins 76::76: -B -q -p - $^ | $(ps2pdf) - $@
+
+## Update this Makefile
+
+# The prerequisites here are what is updated
+.INTERMEDIATE: .i-d-template.diff
+update: Makefile lib .gitignore
+	git diff --quiet -- $^ || \
+	  (echo "You have uncommitted changes to:" $^ 1>&2; exit 1)
+	-if [ -f .i-d-template ]; then \
+	  git diff --exit-code $$(cat .i-d-template) -- $^ > .i-d-template.diff && \
+	  rm -f .i-d-template.diff; \
+	fi
+	git remote | grep i-d-template > /dev/null || \
+	  git remote add i-d-template https://github.com/martinthomson/i-d-template.git
+	git fetch i-d-template
+	[ -f .i-d-template ] && [ $$(git rev-parse i-d-template/master) = $$(cat .i-d-template) ] || \
+	  git checkout i-d-template/master $^
+	git diff --quiet -- $^ && rm -f .i-d-template.diff || \
+	  git commit -m "Update of $^ from i-d-template/$$(git rev-parse i-d-template/master)" $^
+	if [ -f .i-d-template.diff ]; then \
+	  git apply .i-d-template.diff && \
+	  git commit -m "Restoring local changes to $$(git diff --name-only $^ | paste -s -d ' ' -)" $^; \
+	fi
+	git rev-parse i-d-template/master > .i-d-template
+
+## Update the gh-pages branch with useful files
 
 GHPAGES_TMP := /tmp/ghpages$(shell echo $$$$)
-.TRANSIENT: $(GHPAGES_TMP)
+.INTERMEDIATE: $(GHPAGES_TMP)
 ifeq (,$(TRAVIS_COMMIT))
 GIT_ORIG := $(shell git branch | grep '*' | cut -c 3-)
 else
