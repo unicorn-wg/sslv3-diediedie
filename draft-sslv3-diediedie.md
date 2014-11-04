@@ -115,12 +115,13 @@ The predecessor of SSLv3, SSL version 2, is no longer considered secure
 SSLv3 MUST NOT be used {{RFC2119}}.  Negotiation of SSLv3 from any version of TLS
 MUST NOT be permitted.
 
-This document updates Appendix E of {{RFC5246}}.  Clients MUST NOT set a
-record layer version number (TLSPlaintext.version) of {03,00}.  Clients SHOULD
-use their highest supported version number (that is the same as in the
-ClientHello.client_version), or they MAY use their lowest supported version
-number.  Servers MUST accept clients that propose SSLv3 or higher, but MUST
-NOT negotiate SSLv3 in this case.
+This document updates Appendix E of {{RFC5246}}.  Clients MUST NOT set a record
+layer version number (TLSPlaintext.version) of {03,00}.  Clients SHOULD offer
+their highest supported version (that is, the same value that appears in
+ClientHello.client_version); though clients MAY use any value greater than or
+equal to the lowest supported version number they are willing to negotiate.
+Servers SHOULD accept handshakes from clients that propose SSLv3 or higher, but
+MUST NOT negotiate SSLv3.
 
 
 # A Litany of Attacks
