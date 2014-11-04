@@ -119,9 +119,9 @@ This document updates Appendix E of {{RFC5246}}.  Clients MUST NOT set a record
 layer version number (TLSPlaintext.version) of {03,00}.  Clients SHOULD offer
 their highest supported version (that is, the same value that appears in
 ClientHello.client_version); though clients MAY use any value greater than or
-equal to the lowest supported version number they are willing to negotiate.
-Servers SHOULD accept handshakes from clients that propose SSLv3 or higher, but
-MUST NOT negotiate SSLv3.
+equal to the lowest version number they are willing to negotiate.  Servers
+SHOULD accept handshakes from clients that propose SSLv3 or higher, but MUST NOT
+negotiate SSLv3.
 
 
 # A Litany of Attacks
