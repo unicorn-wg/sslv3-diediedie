@@ -5,8 +5,8 @@
 Network Working Group                                          R. Barnes
 Internet-Draft                                                M. Thomson
 Updates: 5246 (if approved)                                      Mozilla
-Intended status: Best Current Practice                  October 30, 2014
-Expires: May 3, 2015
+Intended status: Best Current Practice                      October 2014
+Expires: April 4, 2015
 
 
               Deprecating Secure Sockets Layer Version 3.0
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 3, 2015.
+   This Internet-Draft will expire on April 4, 2015.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Barnes & Thomson           Expires May 3, 2015                  [Page 1]
+Barnes & Thomson          Expires April 4, 2015                 [Page 1]
 
 Internet-Draft          SSLv3 Considered Harmful            October 2014
 
@@ -65,8 +65,8 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  A Litany of Attacks . . . . . . . . . . . . . . . . . . . . .   2
-     2.1.  Record Layer  . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  A Litany of Attacks . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  Record Layer  . . . . . . . . . . . . . . . . . . . . . .   3
      2.2.  Key Exchange  . . . . . . . . . . . . . . . . . . . . . .   3
      2.3.  Custom Cryptographic Primitives . . . . . . . . . . . . .   3
    3.  Limited Capabilities  . . . . . . . . . . . . . . . . . . . .   3
@@ -74,7 +74,7 @@ Table of Contents
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
    6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
      6.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
-     6.2.  Informative References  . . . . . . . . . . . . . . . . .   4
+     6.2.  Informative References  . . . . . . . . . . . . . . . . .   5
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
 
 1.  Introduction
@@ -94,8 +94,25 @@ Table of Contents
    version of TLS MUST NOT be permitted.
 
    This document updates Appendix E of [RFC5246].  Clients MUST NOT set
-   a record layer version number (TLSPlaintext.version) of {03,00};
-   servers MAY continue to accept SSLv3 handshakes from old clients.
+   a record layer version number (TLSPlaintext.version) of {03,00}.
+   Clients SHOULD offer their highest supported version (that is, the
+   same value that appears in ClientHello.client_version); though
+   clients MAY use any value greater than or equal to the lowest version
+   number they are willing to negotiate.  Servers SHOULD accept
+   handshakes from clients that propose SSLv3 or higher, but MUST NOT
+   negotiate SSLv3.
+
+
+
+
+
+
+
+
+Barnes & Thomson          Expires April 4, 2015                 [Page 2]
+
+Internet-Draft          SSLv3 Considered Harmful            October 2014
+
 
 2.  A Litany of Attacks
 
@@ -106,14 +123,6 @@ Table of Contents
    generally, the cipher block chaining (CBC) modes of SSLv3 use a
    flawed MAC-then-encrypt construction that has subsequently been
    replaced in TLS versions [RFC7366].  Unfortunately, the mechanism to
-
-
-
-Barnes & Thomson           Expires May 3, 2015                  [Page 2]
-
-Internet-Draft          SSLv3 Considered Harmful            October 2014
-
-
    correct this flaw relies on extensions: a feature added in TLS 1.0.
    SSLv3 cannot be updated to correct this flaw in the same way.
 
@@ -154,6 +163,13 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
    o  Authenticated Encryption with Additional Data (AEAD) modes are
       added in [RFC5246].
 
+
+
+Barnes & Thomson          Expires April 4, 2015                 [Page 3]
+
+Internet-Draft          SSLv3 Considered Harmful            October 2014
+
+
    o  Elliptic Curve Diffie-Hellman (ECDH) and Digital Signature
       Algorithm (ECDSA) are added in [RFC4492].
 
@@ -162,13 +178,6 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
    o  Stateless session tickets [RFC5077].
 
    o  A datagram mode of operation, DTLS [RFC6347].
-
-
-
-Barnes & Thomson           Expires May 3, 2015                  [Page 3]
-
-Internet-Draft          SSLv3 Considered Harmful            October 2014
-
 
 4.  IANA Considerations
 
@@ -207,6 +216,16 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
               Sockets Layer (SSL) Protocol Version 3.0", RFC 6101,
               August 2011.
 
+
+
+
+
+
+Barnes & Thomson          Expires April 4, 2015                 [Page 4]
+
+Internet-Draft          SSLv3 Considered Harmful            October 2014
+
+
    [RFC7366]  Gutmann, P., "Encrypt-then-MAC for Transport Layer
               Security (TLS) and Datagram Transport Layer Security
               (DTLS)", RFC 7366, September 2014.
@@ -216,15 +235,6 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
    [FIPS180-2]
               Department of Commerce, National., "NIST FIPS 180-2,
               Secure Hash Standard", August 2002.
-
-
-
-
-
-Barnes & Thomson           Expires May 3, 2015                  [Page 4]
-
-Internet-Draft          SSLv3 Considered Harmful            October 2014
-
 
    [POODLE]   Moeller, B., "This POODLE bites: exploiting the SSL 3.0
               fallback", October 2014,
@@ -261,6 +271,17 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
 
 Authors' Addresses
 
+
+
+
+
+
+
+Barnes & Thomson          Expires April 4, 2015                 [Page 5]
+
+Internet-Draft          SSLv3 Considered Harmful            October 2014
+
+
    Richard Barnes
    Mozilla
 
@@ -277,4 +298,39 @@ Authors' Addresses
 
 
 
-Barnes & Thomson           Expires May 3, 2015                  [Page 5]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Barnes & Thomson          Expires April 4, 2015                 [Page 6]

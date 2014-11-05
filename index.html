@@ -472,7 +472,7 @@ ul.toc a:first-child {
 
   <meta name="dct.creator" content="Barnes, R. and M. Thomson" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-sslv3-diediedie-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-10-30" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-10" />
   <meta name="dct.abstract" content="Secure Sockets Layer version 3.0 (SSLv3) " />
   <meta name="description" content="Secure Sockets Layer version 3.0 (SSLv3) " />
 
@@ -497,10 +497,10 @@ ul.toc a:first-child {
 </tr>
 <tr>
   <td class="left">Intended status: Best Current Practice</td>
-  <td class="right">October 30, 2014</td>
+  <td class="right">October 2014</td>
 </tr>
 <tr>
-  <td class="left">Expires: May 3, 2015</td>
+  <td class="left">Expires: April 4, 2015</td>
   <td class="right"></td>
 </tr>
 
@@ -522,7 +522,7 @@ ul.toc a:first-child {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on May 3, 2015.</p>
+<p>This Internet-Draft will expire on April 4, 2015.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -554,7 +554,7 @@ ul.toc a:first-child {
 <p id="rfc.section.1.p.1">The SSLv3 protocol has been subject to a long series of attacks, both on its key exchange mechanism and on the encryption schemes it supports since it was released in 1996.  Despite being replaced by TLS 1.0 <a href="#RFC2246">[RFC2246]</a> in 1999, and subsequently TLS 1.1 in 2002 <a href="#RFC4346">[RFC4346]</a> and 1.2 in 2006 <a href="#RFC5246">[RFC5246]</a>, availability of these replacement versions has not been universal.  As a result, many implementations of TLS have permitted the negotiation of SSLv3.</p>
 <p id="rfc.section.1.p.2">The predecessor of SSLv3, SSL version 2, is no longer considered secure <a href="#RFC6176">[RFC6176]</a>.  SSLv3 now follows.</p>
 <p id="rfc.section.1.p.3">SSLv3 MUST NOT be used <a href="#RFC2119">[RFC2119]</a>.  Negotiation of SSLv3 from any version of TLS MUST NOT be permitted.</p>
-<p id="rfc.section.1.p.4">This document updates Appendix E of <a href="#RFC5246">[RFC5246]</a>.  Clients MUST NOT set a record layer version number (TLSPlaintext.version) of {03,00}; servers MAY continue to accept SSLv3 handshakes from old clients.</p>
+<p id="rfc.section.1.p.4">This document updates Appendix E of <a href="#RFC5246">[RFC5246]</a>.  Clients MUST NOT set a record layer version number (TLSPlaintext.version) of {03,00}.  Clients SHOULD offer their highest supported version (that is, the same value that appears in ClientHello.client_version); though clients MAY use any value greater than or equal to the lowest version number they are willing to negotiate.  Servers SHOULD accept handshakes from clients that propose SSLv3 or higher, but MUST NOT negotiate SSLv3.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#a-litany-of-attacks" id="a-litany-of-attacks">A Litany of Attacks</a></h1>
 <h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#record-layer" id="record-layer">Record Layer</a></h1>
 <p id="rfc.section.2.1.p.1">The non-deterministic padding used in the CBC construction of SSLv3 trivially permits the recovery of plaintext <a href="#POODLE">[POODLE]</a>. More generally, the cipher block chaining (CBC) modes of SSLv3 use a flawed MAC-then-encrypt construction that has subsequently been replaced in TLS versions <a href="#RFC7366">[RFC7366]</a>.  Unfortunately, the mechanism to correct this flaw relies on extensions: a feature added in TLS 1.0.  SSLv3 cannot be updated to correct this flaw in the same way.</p>
