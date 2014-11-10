@@ -21,6 +21,16 @@ author:
     name: Martin Thomson
     org: Mozilla
     email: martin.thomson@gmail.com
+ -
+    ins: A. Pironti
+    name: Alfredo Pironti
+    org: INRIA
+    email: alfredo@pironti.eu
+ -
+   ins: A. Langley
+   name: Adam Langley
+   org: Google
+   email: agl@google.com
 
 
 normative:
