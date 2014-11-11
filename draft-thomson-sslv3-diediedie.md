@@ -2,7 +2,7 @@
 title: Deprecating Secure Sockets Layer Version 3.0
 abbrev: SSLv3 Considered Harmful
 docname: draft-thomson-sslv3-diediedie-00
-date: 2014-10
+date: 2014
 category: bcp
 ipr: trust200902
 updates: 5246
@@ -130,8 +130,8 @@ layer version number (TLSPlaintext.version) of {03,00}.  Clients SHOULD offer
 their highest supported version (that is, the same value that appears in
 ClientHello.client_version); though clients MAY use any value greater than or
 equal to the lowest version number they are willing to negotiate.  Servers
-SHOULD accept handshakes from clients that propose SSLv3 or higher, but MUST NOT
-negotiate SSLv3.
+SHOULD accept handshakes from clients that use a record layer version of {03,00}
+(i.e., SSLv3), but MUST NOT negotiate SSLv3.
 
 
 # A Litany of Attacks
