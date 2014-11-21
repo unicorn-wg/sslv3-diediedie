@@ -122,17 +122,16 @@ many implementations of TLS have permitted the negotiation of SSLv3.
 The predecessor of SSLv3, SSL version 2, is no longer considered secure
 {{RFC6176}}.  SSLv3 now follows.
 
-SSLv3 MUST NOT be used {{RFC2119}}.  Negotiation of SSLv3 from any version of TLS
-MUST NOT be permitted.
+SSLv3 MUST NOT be used {{RFC2119}}.  Negotiation of SSLv3 from any version of
+TLS MUST NOT be permitted. In particular, TLS clients MUST NOT send a
+ClientHello with ClientHello.client_version set to {03,00}; TLS servers MUST NOT
+send a ServerHello with ServerHello.server_version set to {03,00}; and if a TLS
+client receives a ServerHello with ServerHello.server_version set to {03,00},
+the client MUST send a protocol_version alert message and close the connection.
 
-This document updates Appendix E of {{RFC5246}}.  Clients MUST NOT set a record
-layer version number (TLSPlaintext.version) of {03,00}.  Clients SHOULD offer
-their highest supported version (that is, the same value that appears in
-ClientHello.client_version); though clients MAY use any value greater than or
-equal to the lowest version number they are willing to negotiate.  Servers
-SHOULD accept handshakes from clients that propose SSLv3 or higher, but MUST NOT
-negotiate SSLv3.
-
+The advice given in Appendix E of {{RFC5246}} still applies. In particular, TLS
+clients MAY send any value {03,XX} as the record layer version number, including
+{03,00}.
 
 # A Litany of Attacks
 
