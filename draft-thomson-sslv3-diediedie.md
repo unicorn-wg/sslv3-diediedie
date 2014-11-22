@@ -1,6 +1,6 @@
 ---
 title: Deprecating Secure Sockets Layer Version 3.0
-abbrev: SSLv3 Considered Harmful
+abbrev: SSLv3 is not Secure
 docname: draft-thomson-sslv3-diediedie-00
 date: 2014
 category: bcp
