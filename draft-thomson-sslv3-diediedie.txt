@@ -6,10 +6,10 @@ Network Working Group                                          R. Barnes
 Internet-Draft                                                M. Thomson
 Updates: 5246 (if approved)                                      Mozilla
 Intended status: Best Current Practice                        A. Pironti
-Expires: April 4, 2015                                             INRIA
+Expires: May 26, 2015                                              INRIA
                                                               A. Langley
                                                                   Google
-                                                            October 2014
+                                                       November 22, 2014
 
 
               Deprecating Secure Sockets Layer Version 3.0
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 4, 2015.
+   This Internet-Draft will expire on May 26, 2015.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Barnes, et al.            Expires April 4, 2015                 [Page 1]
+Barnes, et al.            Expires May 26, 2015                  [Page 1]
 
-Internet-Draft          SSLv3 Considered Harmful            October 2014
+Internet-Draft          SSLv3 Considered Harmful           November 2014
 
 
    publication of this document.  Please review these documents
@@ -78,7 +78,7 @@ Table of Contents
    6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
      6.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
      6.2.  Informative References  . . . . . . . . . . . . . . . . .   5
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
 
@@ -96,23 +96,30 @@ Table of Contents
    SSLv3 MUST NOT be used [RFC2119].  Negotiation of SSLv3 from any
    version of TLS MUST NOT be permitted.
 
-   This document updates Appendix E of [RFC5246].  Clients MUST NOT set
-   a record layer version number (TLSPlaintext.version) of {03,00}.
-   Clients SHOULD offer their highest supported version (that is, the
-   same value that appears in ClientHello.client_version); though
-   clients MAY use any value greater than or equal to the lowest version
-   number they are willing to negotiate.  Servers SHOULD accept
-   handshakes from clients that propose SSLv3 or higher, but MUST NOT
-   negotiate SSLv3.
+   Pragmatically, clients MUST NOT send a ClientHello with
+   ClientHello.client_version set to {03,00}.  Similarly, servers MUST
+   NOT send a ServerHello with ServerHello.server_version set to
+   {03,00}.  Any party receiving a Hello message with the protocol
+   version set to {03,00} MUST respond with a "protocol_version" alert
+   message and close the connection.
+
+   Historically, TLS specifications were not fully clear on what the
+   record layer version number (TLSPlaintext.version) should contain
+   when sending ClientHello (i.e., before it is known which version of
 
 
 
-
-
-Barnes, et al.            Expires April 4, 2015                 [Page 2]
+Barnes, et al.            Expires May 26, 2015                  [Page 2]
 
-Internet-Draft          SSLv3 Considered Harmful            October 2014
+Internet-Draft          SSLv3 Considered Harmful           November 2014
 
+
+   the protocol will be employed).  Appendix E of [RFC5246] provides
+   some recommendations to maximize interoperability.  To the purpose of
+   this document, such recommendations are still applicable.  In
+   particular, TLS servers compliant with this document MUST accept any
+   value {03,XX} (thus including {03,00}) as the record layer version
+   number for ClientHello, but they MUST NOT negotiate SSLv3.
 
 2.  A Litany of Attacks
 
@@ -156,19 +163,19 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
    added to recent TLS versions.  This includes the features that are
    enabled by ClientHello extensions, which SSLv3 does not support.
 
+
+
+Barnes, et al.            Expires May 26, 2015                  [Page 3]
+
+Internet-Draft          SSLv3 Considered Harmful           November 2014
+
+
    Though SSLv3 can benefit from new cipher suites, it cannot benefit
    from new cryptographic modes.  Of these, the following are
    particularly prominent:
 
    o  Authenticated Encryption with Additional Data (AEAD) modes are
       added in [RFC5246].
-
-
-
-Barnes, et al.            Expires April 4, 2015                 [Page 3]
-
-Internet-Draft          SSLv3 Considered Harmful            October 2014
-
 
    o  Elliptic Curve Diffie-Hellman (ECDH) and Digital Signature
       Algorithm (ECDSA) are added in [RFC4492].
@@ -212,19 +219,16 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246, August 2008.
 
+
+
+Barnes, et al.            Expires May 26, 2015                  [Page 4]
+
+Internet-Draft          SSLv3 Considered Harmful           November 2014
+
+
    [RFC6101]  Freier, A., Karlton, P., and P. Kocher, "The Secure
               Sockets Layer (SSL) Protocol Version 3.0", RFC 6101,
               August 2011.
-
-
-
-
-
-
-Barnes, et al.            Expires April 4, 2015                 [Page 4]
-
-Internet-Draft          SSLv3 Considered Harmful            October 2014
-
 
    [RFC7366]  Gutmann, P., "Encrypt-then-MAC for Transport Layer
               Security (TLS) and Datagram Transport Layer Security
@@ -269,18 +273,16 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
               Breaking and Fixing Authentication over TLS", IEEE
               Symposium on Security and Privacy, 2014.
 
-Authors' Addresses
 
 
 
 
-
-
-
-Barnes, et al.            Expires April 4, 2015                 [Page 5]
+Barnes, et al.            Expires May 26, 2015                  [Page 5]
 
-Internet-Draft          SSLv3 Considered Harmful            October 2014
+Internet-Draft          SSLv3 Considered Harmful           November 2014
 
+
+Authors' Addresses
 
    Richard Barnes
    Mozilla
@@ -331,6 +333,4 @@ Internet-Draft          SSLv3 Considered Harmful            October 2014
 
 
 
-
-
-Barnes, et al.            Expires April 4, 2015                 [Page 6]
+Barnes, et al.            Expires May 26, 2015                  [Page 6]
