@@ -2,7 +2,7 @@
 title: Deprecating Secure Sockets Layer Version 3.0
 abbrev: SSLv3 Considered Harmful
 docname: draft-thomson-sslv3-diediedie-00
-date: 2014-10
+date: 2014
 category: bcp
 ipr: trust200902
 updates: 5246
@@ -125,14 +125,20 @@ The predecessor of SSLv3, SSL version 2, is no longer considered secure
 SSLv3 MUST NOT be used {{RFC2119}}.  Negotiation of SSLv3 from any version of TLS
 MUST NOT be permitted.
 
-This document updates Appendix E of {{RFC5246}}.  Clients MUST NOT set a record
-layer version number (TLSPlaintext.version) of {03,00}.  Clients SHOULD offer
-their highest supported version (that is, the same value that appears in
-ClientHello.client_version); though clients MAY use any value greater than or
-equal to the lowest version number they are willing to negotiate.  Servers
-SHOULD accept handshakes from clients that propose SSLv3 or higher, but MUST NOT
-negotiate SSLv3.
+Pragmatically, clients MUST NOT send a ClientHello with
+ClientHello.client_version set to {03,00}.  Similarly, servers MUST NOT send a
+ServerHello with ServerHello.server_version set to {03,00}.  Any party
+receiving a Hello message with the protocol version set to {03,00} MUST
+respond with a "protocol_version" alert message and close the connection.
 
+Historically, TLS specifications were not fully clear on what the record layer
+version number (TLSPlaintext.version) should contain when sending ClientHello
+(i.e., before it is known which version of the protocol will be employed).
+Appendix E of {{RFC5246}} provides some recommendations to maximize
+interoperability.  To the purpose of this document, such recommendations are
+still applicable.  In particular, TLS servers compliant with this document MUST
+accept any value {03,XX} (thus including {03,00}) as the record layer version
+number for ClientHello, but they MUST NOT negotiate SSLv3.
 
 # A Litany of Attacks
 
