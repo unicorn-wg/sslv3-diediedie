@@ -122,6 +122,8 @@ many implementations of TLS have permitted the negotiation of SSLv3.
 The predecessor of SSLv3, SSL version 2, is no longer considered secure
 {{RFC6176}}.  SSLv3 now follows.
 
+# Do Not Use SSL Version 3.0
+
 SSLv3 MUST NOT be used {{RFC2119}}.  Negotiation of SSLv3 from any version of TLS
 MUST NOT be permitted.
 
