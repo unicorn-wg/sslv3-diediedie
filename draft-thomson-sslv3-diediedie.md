@@ -1,6 +1,6 @@
 ---
 title: Deprecating Secure Sockets Layer Version 3.0
-abbrev: SSLv3 Considered Harmful
+abbrev: SSLv3 is not Secure
 docname: draft-thomson-sslv3-diediedie-00
 date: 2014
 category: bcp
@@ -122,8 +122,13 @@ many implementations of TLS have permitted the negotiation of SSLv3.
 The predecessor of SSLv3, SSL version 2, is no longer considered secure
 {{RFC6176}}.  SSLv3 now follows.
 
+# Do Not Use SSL Version 3.0
+
 SSLv3 MUST NOT be used {{RFC2119}}.  Negotiation of SSLv3 from any version of TLS
 MUST NOT be permitted.
+
+Any version of TLS is more secure then SSLv3, though the highest version
+available is preferable.
 
 Pragmatically, clients MUST NOT send a ClientHello with
 ClientHello.client_version set to {03,00}.  Similarly, servers MUST NOT send a
@@ -131,14 +136,14 @@ ServerHello with ServerHello.server_version set to {03,00}.  Any party
 receiving a Hello message with the protocol version set to {03,00} MUST
 respond with a "protocol_version" alert message and close the connection.
 
-Historically, TLS specifications were not fully clear on what the record layer
-version number (TLSPlaintext.version) should contain when sending ClientHello
-(i.e., before it is known which version of the protocol will be employed).
-Appendix E of {{RFC5246}} provides some recommendations to maximize
-interoperability.  To the purpose of this document, such recommendations are
-still applicable.  In particular, TLS servers compliant with this document MUST
-accept any value {03,XX} (thus including {03,00}) as the record layer version
-number for ClientHello, but they MUST NOT negotiate SSLv3.
+Historically, TLS specifications were not clear on what the record layer version
+number (TLSPlaintext.version) could contain when sending ClientHello.  Appendix
+E of {{RFC5246}} notes that TLSPlaintext.version could be selected to maximize
+interoperability, though no definitive value is identified as ideal.  That
+guidance is still applicable; therefore, TLS servers MUST accept any value
+{03,XX} (including {03,00}) as the record layer version number for ClientHello,
+but they MUST NOT negotiate SSLv3.
+
 
 # A Litany of Attacks
 
@@ -193,11 +198,11 @@ cryptographic modes.  Of these, the following are particularly prominent:
 * Elliptic Curve Diffie-Hellman (ECDH) and Digital Signature Algorithm (ECDSA)
   are added in {{RFC4492}}.
 
-* Application layer protocol negotiation {{RFC7301}}.
-
 * Stateless session tickets {{RFC5077}}.
 
 * A datagram mode of operation, DTLS {{RFC6347}}.
+
+* Application layer protocol negotiation {{RFC7301}}.
 
 
 # IANA Considerations
