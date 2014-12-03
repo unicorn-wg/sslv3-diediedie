@@ -454,16 +454,17 @@ ul.toc a:first-child {
 
   <link href="#rfc.toc" rel="Contents"/>
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
-<link href="#rfc.section.2" rel="Chapter" title="2 A Litany of Attacks"/>
-<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Record Layer"/>
-<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Key Exchange"/>
-<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Custom Cryptographic Primitives"/>
-<link href="#rfc.section.3" rel="Chapter" title="3 Limited Capabilities"/>
-<link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
-<link href="#rfc.references" rel="Chapter" title="6 References"/>
-<link href="#rfc.references.1" rel="Chapter" title="6.1 Normative References"/>
-<link href="#rfc.references.2" rel="Chapter" title="6.2 Informative References"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Do Not Use SSL Version 3.0"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 A Litany of Attacks"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Record Layer"/>
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Key Exchange"/>
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Custom Cryptographic Primitives"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Limited Capabilities"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="7 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="7.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="7.2 Informative References"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
 
@@ -472,7 +473,7 @@ ul.toc a:first-child {
 
   <meta name="dct.creator" content="Barnes, R., Thomson, M., Pironti, A., and A. Langley" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-thomson-sslv3-diediedie-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2014-11-22" />
+  <meta name="dct.issued" scheme="ISO8601" content="2014-12-3" />
   <meta name="dct.abstract" content="Secure Sockets Layer version 3.0 (SSLv3) " />
   <meta name="description" content="Secure Sockets Layer version 3.0 (SSLv3) " />
 
@@ -500,7 +501,7 @@ ul.toc a:first-child {
   <td class="right">A. Pironti</td>
 </tr>
 <tr>
-  <td class="left">Expires: May 26, 2015</td>
+  <td class="left">Expires: June 6, 2015</td>
   <td class="right">INRIA</td>
 </tr>
 <tr>
@@ -513,7 +514,7 @@ ul.toc a:first-child {
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">November 22, 2014</td>
+  <td class="right">December 3, 2014</td>
 </tr>
 
     	
@@ -534,7 +535,7 @@ ul.toc a:first-child {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on May 26, 2015.</p>
+<p>This Internet-Draft will expire on June 6, 2015.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -547,16 +548,17 @@ ul.toc a:first-child {
   <ul class="toc">
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
-<li>2.   <a href="#rfc.section.2">A Litany of Attacks</a></li>
-<li>2.1.   <a href="#rfc.section.2.1">Record Layer</a></li>
-<li>2.2.   <a href="#rfc.section.2.2">Key Exchange</a></li>
-<li>2.3.   <a href="#rfc.section.2.3">Custom Cryptographic Primitives</a></li>
-<li>3.   <a href="#rfc.section.3">Limited Capabilities</a></li>
-<li>4.   <a href="#rfc.section.4">IANA Considerations</a></li>
-<li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
-<li>6.   <a href="#rfc.references">References</a></li>
-<li>6.1.   <a href="#rfc.references.1">Normative References</a></li>
-<li>6.2.   <a href="#rfc.references.2">Informative References</a></li>
+<li>2.   <a href="#rfc.section.2">Do Not Use SSL Version 3.0</a></li>
+<li>3.   <a href="#rfc.section.3">A Litany of Attacks</a></li>
+<li>3.1.   <a href="#rfc.section.3.1">Record Layer</a></li>
+<li>3.2.   <a href="#rfc.section.3.2">Key Exchange</a></li>
+<li>3.3.   <a href="#rfc.section.3.3">Custom Cryptographic Primitives</a></li>
+<li>4.   <a href="#rfc.section.4">Limited Capabilities</a></li>
+<li>5.   <a href="#rfc.section.5">IANA Considerations</a></li>
+<li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
+<li>7.   <a href="#rfc.references">References</a></li>
+<li>7.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>7.2.   <a href="#rfc.references.2">Informative References</a></li>
 <li><a href="#rfc.authors">Authors' Addresses</a></li>
 
 
@@ -565,36 +567,38 @@ ul.toc a:first-child {
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
 <p id="rfc.section.1.p.1">The SSLv3 protocol has been subject to a long series of attacks, both on its key exchange mechanism and on the encryption schemes it supports since it was released in 1996.  Despite being replaced by TLS 1.0 <a href="#RFC2246">[RFC2246]</a> in 1999, and subsequently TLS 1.1 in 2002 <a href="#RFC4346">[RFC4346]</a> and 1.2 in 2006 <a href="#RFC5246">[RFC5246]</a>, availability of these replacement versions has not been universal.  As a result, many implementations of TLS have permitted the negotiation of SSLv3.</p>
 <p id="rfc.section.1.p.2">The predecessor of SSLv3, SSL version 2, is no longer considered secure <a href="#RFC6176">[RFC6176]</a>.  SSLv3 now follows.</p>
-<p id="rfc.section.1.p.3">SSLv3 MUST NOT be used <a href="#RFC2119">[RFC2119]</a>.  Negotiation of SSLv3 from any version of TLS MUST NOT be permitted.</p>
-<p id="rfc.section.1.p.4">Pragmatically, clients MUST NOT send a ClientHello with ClientHello.client_version set to {03,00}.  Similarly, servers MUST NOT send a ServerHello with ServerHello.server_version set to {03,00}.  Any party receiving a Hello message with the protocol version set to {03,00} MUST respond with a &#8220;protocol_version&#8221; alert message and close the connection.</p>
-<p id="rfc.section.1.p.5">Historically, TLS specifications were not fully clear on what the record layer version number (TLSPlaintext.version) should contain when sending ClientHello (i.e., before it is known which version of the protocol will be employed).  Appendix E of <a href="#RFC5246">[RFC5246]</a> provides some recommendations to maximize interoperability.  To the purpose of this document, such recommendations are still applicable.  In particular, TLS servers compliant with this document MUST accept any value {03,XX} (thus including {03,00}) as the record layer version number for ClientHello, but they MUST NOT negotiate SSLv3.</p>
-<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#a-litany-of-attacks" id="a-litany-of-attacks">A Litany of Attacks</a></h1>
-<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#record-layer" id="record-layer">Record Layer</a></h1>
-<p id="rfc.section.2.1.p.1">The non-deterministic padding used in the CBC construction of SSLv3 trivially permits the recovery of plaintext <a href="#POODLE">[POODLE]</a>. More generally, the cipher block chaining (CBC) modes of SSLv3 use a flawed MAC-then-encrypt construction that has subsequently been replaced in TLS versions <a href="#RFC7366">[RFC7366]</a>.  Unfortunately, the mechanism to correct this flaw relies on extensions: a feature added in TLS 1.0.  SSLv3 cannot be updated to correct this flaw in the same way.</p>
-<p id="rfc.section.2.1.p.2">The flaws in the CBC modes in SSLv3 are mirrored by the weakness of the stream ciphers it defines.  Of those defined, only RC4 is currently in widespread use.  RC4, however, exhibits serious biases and is also no longer fit for use <a href="#I-D.ietf-tls-prohibiting-rc4">[I-D.ietf-tls-prohibiting-rc4]</a>.</p>
-<p id="rfc.section.2.1.p.3">This leaves SSLv3 with no suitable record protection mechanism.</p>
-<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#key-exchange" id="key-exchange">Key Exchange</a></h1>
-<p id="rfc.section.2.2.p.1">The SSLv3 key exchange is vulnerable to man-in-the-middle attacks when renegotiation <a href="#Ray09">[Ray09]</a> or session resumption <a href="#TRIPLE-HS">[TRIPLE-HS]</a> are used.  Each flaw has been fixed in TLS by means of extensions. Again, SSLv3 cannot be updated to correct these flaws.</p>
-<h1 id="rfc.section.2.3"><a href="#rfc.section.2.3">2.3.</a> <a href="#custom-cryptographic-primitives" id="custom-cryptographic-primitives">Custom Cryptographic Primitives</a></h1>
-<p id="rfc.section.2.3.p.1">SSLv3 defines custom constructions for PRF, HMAC and digital signature primitives.  Such constructions lack the deep cryptographic scrutiny that standard constructions used by TLS have received.  Furthermore, all SSLv3 primitives rely on SHA-1 <a href="#RFC3174">[RFC3174]</a> and MD5 <a href="#RFC1321">[RFC1321]</a>: these hash algorithms are considered weak and are being systematically replaced with stronger hash functions, such as SHA-256 <a href="#FIPS180-2">[FIPS180-2]</a>.</p>
-<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#limited-capabilities" id="limited-capabilities">Limited Capabilities</a></h1>
-<p id="rfc.section.3.p.1">SSLv3 is unable to take advantage of the many features that have been added to recent TLS versions.  This includes the features that are enabled by ClientHello extensions, which SSLv3 does not support.</p>
-<p id="rfc.section.3.p.2">Though SSLv3 can benefit from new cipher suites, it cannot benefit from new cryptographic modes.  Of these, the following are particularly prominent:</p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#do-not-use-ssl-version-30" id="do-not-use-ssl-version-30">Do Not Use SSL Version 3.0</a></h1>
+<p id="rfc.section.2.p.1">SSLv3 MUST NOT be used <a href="#RFC2119">[RFC2119]</a>.  Negotiation of SSLv3 from any version of TLS MUST NOT be permitted.</p>
+<p id="rfc.section.2.p.2">Any version of TLS is more secure then SSLv3, though the highest version available is preferable.</p>
+<p id="rfc.section.2.p.3">Pragmatically, clients MUST NOT send a ClientHello with ClientHello.client_version set to {03,00}.  Similarly, servers MUST NOT send a ServerHello with ServerHello.server_version set to {03,00}.  Any party receiving a Hello message with the protocol version set to {03,00} MUST respond with a &#8220;protocol_version&#8221; alert message and close the connection.</p>
+<p id="rfc.section.2.p.4">Historically, TLS specifications were not clear on what the record layer version number (TLSPlaintext.version) could contain when sending ClientHello.  Appendix E of <a href="#RFC5246">[RFC5246]</a> notes that TLSPlaintext.version could be selected to maximize interoperability, though no definitive value is identified as ideal.  That guidance is still applicable; therefore, TLS servers MUST accept any value {03,XX} (including {03,00}) as the record layer version number for ClientHello, but they MUST NOT negotiate SSLv3.</p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#a-litany-of-attacks" id="a-litany-of-attacks">A Litany of Attacks</a></h1>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#record-layer" id="record-layer">Record Layer</a></h1>
+<p id="rfc.section.3.1.p.1">The non-deterministic padding used in the CBC construction of SSLv3 trivially permits the recovery of plaintext <a href="#POODLE">[POODLE]</a>. More generally, the cipher block chaining (CBC) modes of SSLv3 use a flawed MAC-then-encrypt construction that has subsequently been replaced in TLS versions <a href="#RFC7366">[RFC7366]</a>.  Unfortunately, the mechanism to correct this flaw relies on extensions: a feature added in TLS 1.0.  SSLv3 cannot be updated to correct this flaw in the same way.</p>
+<p id="rfc.section.3.1.p.2">The flaws in the CBC modes in SSLv3 are mirrored by the weakness of the stream ciphers it defines.  Of those defined, only RC4 is currently in widespread use.  RC4, however, exhibits serious biases and is also no longer fit for use <a href="#I-D.ietf-tls-prohibiting-rc4">[I-D.ietf-tls-prohibiting-rc4]</a>.</p>
+<p id="rfc.section.3.1.p.3">This leaves SSLv3 with no suitable record protection mechanism.</p>
+<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#key-exchange" id="key-exchange">Key Exchange</a></h1>
+<p id="rfc.section.3.2.p.1">The SSLv3 key exchange is vulnerable to man-in-the-middle attacks when renegotiation <a href="#Ray09">[Ray09]</a> or session resumption <a href="#TRIPLE-HS">[TRIPLE-HS]</a> are used.  Each flaw has been fixed in TLS by means of extensions. Again, SSLv3 cannot be updated to correct these flaws.</p>
+<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#custom-cryptographic-primitives" id="custom-cryptographic-primitives">Custom Cryptographic Primitives</a></h1>
+<p id="rfc.section.3.3.p.1">SSLv3 defines custom constructions for PRF, HMAC and digital signature primitives.  Such constructions lack the deep cryptographic scrutiny that standard constructions used by TLS have received.  Furthermore, all SSLv3 primitives rely on SHA-1 <a href="#RFC3174">[RFC3174]</a> and MD5 <a href="#RFC1321">[RFC1321]</a>: these hash algorithms are considered weak and are being systematically replaced with stronger hash functions, such as SHA-256 <a href="#FIPS180-2">[FIPS180-2]</a>.</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#limited-capabilities" id="limited-capabilities">Limited Capabilities</a></h1>
+<p id="rfc.section.4.p.1">SSLv3 is unable to take advantage of the many features that have been added to recent TLS versions.  This includes the features that are enabled by ClientHello extensions, which SSLv3 does not support.</p>
+<p id="rfc.section.4.p.2">Though SSLv3 can benefit from new cipher suites, it cannot benefit from new cryptographic modes.  Of these, the following are particularly prominent:</p>
 <p/>
 
 <ul>
   <li>Authenticated Encryption with Additional Data (AEAD) modes are added in <a href="#RFC5246">[RFC5246]</a>.</li>
   <li>Elliptic Curve Diffie-Hellman (ECDH) and Digital Signature Algorithm (ECDSA) are added in <a href="#RFC4492">[RFC4492]</a>.</li>
-  <li>Application layer protocol negotiation <a href="#RFC7301">[RFC7301]</a>.</li>
   <li>Stateless session tickets <a href="#RFC5077">[RFC5077]</a>.</li>
   <li>A datagram mode of operation, DTLS <a href="#RFC6347">[RFC6347]</a>.</li>
+  <li>Application layer protocol negotiation <a href="#RFC7301">[RFC7301]</a>.</li>
 </ul>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
-<p id="rfc.section.4.p.1">This document has no IANA actions.</p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
-<p id="rfc.section.5.p.1">This entire document aims to improve security by identifying a protocol that is not secure.</p>
-<h1 id="rfc.references"><a href="#rfc.references">6.</a> References</h1>
-<h1 id="rfc.references.1"><a href="#rfc.references.1">6.1.</a> Normative References</h1>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
+<p id="rfc.section.5.p.1">This document has no IANA actions.</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
+<p id="rfc.section.6.p.1">This entire document aims to improve security by identifying a protocol that is not secure.</p>
+<h1 id="rfc.references"><a href="#rfc.references">7.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">7.1.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -647,7 +651,7 @@ ul.toc a:first-child {
     </tr>
   </tbody>
 </table>
-<h1 id="rfc.references.2"><a href="#rfc.references.2">6.2.</a> Informative References</h1>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">7.2.</a> Informative References</h1>
 <table>
   <tbody>
     <tr>

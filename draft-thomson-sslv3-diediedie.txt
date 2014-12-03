@@ -6,10 +6,10 @@ Network Working Group                                          R. Barnes
 Internet-Draft                                                M. Thomson
 Updates: 5246 (if approved)                                      Mozilla
 Intended status: Best Current Practice                        A. Pironti
-Expires: May 26, 2015                                              INRIA
+Expires: June 6, 2015                                              INRIA
                                                               A. Langley
                                                                   Google
-                                                       November 22, 2014
+                                                        December 3, 2014
 
 
               Deprecating Secure Sockets Layer Version 3.0
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 26, 2015.
+   This Internet-Draft will expire on June 6, 2015.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Barnes, et al.            Expires May 26, 2015                  [Page 1]
+Barnes, et al.            Expires June 6, 2015                  [Page 1]
 
-Internet-Draft          SSLv3 Considered Harmful           November 2014
+Internet-Draft             SSLv3 is not Secure             December 2014
 
 
    publication of this document.  Please review these documents
@@ -68,16 +68,17 @@ Internet-Draft          SSLv3 Considered Harmful           November 2014
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  A Litany of Attacks . . . . . . . . . . . . . . . . . . . . .   3
-     2.1.  Record Layer  . . . . . . . . . . . . . . . . . . . . . .   3
-     2.2.  Key Exchange  . . . . . . . . . . . . . . . . . . . . . .   3
-     2.3.  Custom Cryptographic Primitives . . . . . . . . . . . . .   3
-   3.  Limited Capabilities  . . . . . . . . . . . . . . . . . . . .   3
-   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     6.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
-     6.2.  Informative References  . . . . . . . . . . . . . . . . .   5
+   2.  Do Not Use SSL Version 3.0  . . . . . . . . . . . . . . . . .   2
+   3.  A Litany of Attacks . . . . . . . . . . . . . . . . . . . . .   3
+     3.1.  Record Layer  . . . . . . . . . . . . . . . . . . . . . .   3
+     3.2.  Key Exchange  . . . . . . . . . . . . . . . . . . . . . .   3
+     3.3.  Custom Cryptographic Primitives . . . . . . . . . . . . .   3
+   4.  Limited Capabilities  . . . . . . . . . . . . . . . . . . . .   4
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .   5
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
@@ -93,37 +94,41 @@ Table of Contents
    The predecessor of SSLv3, SSL version 2, is no longer considered
    secure [RFC6176].  SSLv3 now follows.
 
+2.  Do Not Use SSL Version 3.0
+
    SSLv3 MUST NOT be used [RFC2119].  Negotiation of SSLv3 from any
    version of TLS MUST NOT be permitted.
+
+   Any version of TLS is more secure then SSLv3, though the highest
+   version available is preferable.
 
    Pragmatically, clients MUST NOT send a ClientHello with
    ClientHello.client_version set to {03,00}.  Similarly, servers MUST
    NOT send a ServerHello with ServerHello.server_version set to
    {03,00}.  Any party receiving a Hello message with the protocol
+
+
+
+Barnes, et al.            Expires June 6, 2015                  [Page 2]
+
+Internet-Draft             SSLv3 is not Secure             December 2014
+
+
    version set to {03,00} MUST respond with a "protocol_version" alert
    message and close the connection.
 
-   Historically, TLS specifications were not fully clear on what the
-   record layer version number (TLSPlaintext.version) should contain
-   when sending ClientHello (i.e., before it is known which version of
+   Historically, TLS specifications were not clear on what the record
+   layer version number (TLSPlaintext.version) could contain when
+   sending ClientHello.  Appendix E of [RFC5246] notes that
+   TLSPlaintext.version could be selected to maximize interoperability,
+   though no definitive value is identified as ideal.  That guidance is
+   still applicable; therefore, TLS servers MUST accept any value
+   {03,XX} (including {03,00}) as the record layer version number for
+   ClientHello, but they MUST NOT negotiate SSLv3.
 
+3.  A Litany of Attacks
 
-
-Barnes, et al.            Expires May 26, 2015                  [Page 2]
-
-Internet-Draft          SSLv3 Considered Harmful           November 2014
-
-
-   the protocol will be employed).  Appendix E of [RFC5246] provides
-   some recommendations to maximize interoperability.  To the purpose of
-   this document, such recommendations are still applicable.  In
-   particular, TLS servers compliant with this document MUST accept any
-   value {03,XX} (thus including {03,00}) as the record layer version
-   number for ClientHello, but they MUST NOT negotiate SSLv3.
-
-2.  A Litany of Attacks
-
-2.1.  Record Layer
+3.1.  Record Layer
 
    The non-deterministic padding used in the CBC construction of SSLv3
    trivially permits the recovery of plaintext [POODLE].  More
@@ -140,14 +145,14 @@ Internet-Draft          SSLv3 Considered Harmful           November 2014
 
    This leaves SSLv3 with no suitable record protection mechanism.
 
-2.2.  Key Exchange
+3.2.  Key Exchange
 
    The SSLv3 key exchange is vulnerable to man-in-the-middle attacks
    when renegotiation [Ray09] or session resumption [TRIPLE-HS] are
    used.  Each flaw has been fixed in TLS by means of extensions.
    Again, SSLv3 cannot be updated to correct these flaws.
 
-2.3.  Custom Cryptographic Primitives
+3.3.  Custom Cryptographic Primitives
 
    SSLv3 defines custom constructions for PRF, HMAC and digital
    signature primitives.  Such constructions lack the deep cryptographic
@@ -157,18 +162,19 @@ Internet-Draft          SSLv3 Considered Harmful           November 2014
    systematically replaced with stronger hash functions, such as SHA-256
    [FIPS180-2].
 
-3.  Limited Capabilities
+
+
+
+Barnes, et al.            Expires June 6, 2015                  [Page 3]
+
+Internet-Draft             SSLv3 is not Secure             December 2014
+
+
+4.  Limited Capabilities
 
    SSLv3 is unable to take advantage of the many features that have been
    added to recent TLS versions.  This includes the features that are
    enabled by ClientHello extensions, which SSLv3 does not support.
-
-
-
-Barnes, et al.            Expires May 26, 2015                  [Page 3]
-
-Internet-Draft          SSLv3 Considered Harmful           November 2014
-
 
    Though SSLv3 can benefit from new cipher suites, it cannot benefit
    from new cryptographic modes.  Of these, the following are
@@ -180,24 +186,24 @@ Internet-Draft          SSLv3 Considered Harmful           November 2014
    o  Elliptic Curve Diffie-Hellman (ECDH) and Digital Signature
       Algorithm (ECDSA) are added in [RFC4492].
 
-   o  Application layer protocol negotiation [RFC7301].
-
    o  Stateless session tickets [RFC5077].
 
    o  A datagram mode of operation, DTLS [RFC6347].
 
-4.  IANA Considerations
+   o  Application layer protocol negotiation [RFC7301].
+
+5.  IANA Considerations
 
    This document has no IANA actions.
 
-5.  Security Considerations
+6.  Security Considerations
 
    This entire document aims to improve security by identifying a
    protocol that is not secure.
 
-6.  References
+7.  References
 
-6.1.  Normative References
+7.1.  Normative References
 
    [I-D.ietf-tls-prohibiting-rc4]
               Popov, A., "Prohibiting RC4 Cipher Suites", draft-ietf-
@@ -212,19 +218,20 @@ Internet-Draft          SSLv3 Considered Harmful           November 2014
    [RFC4346]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.1", RFC 4346, April 2006.
 
+
+
+
+Barnes, et al.            Expires June 6, 2015                  [Page 4]
+
+Internet-Draft             SSLv3 is not Secure             December 2014
+
+
    [RFC4492]  Blake-Wilson, S., Bolyard, N., Gupta, V., Hawk, C., and B.
               Moeller, "Elliptic Curve Cryptography (ECC) Cipher Suites
               for Transport Layer Security (TLS)", RFC 4492, May 2006.
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246, August 2008.
-
-
-
-Barnes, et al.            Expires May 26, 2015                  [Page 4]
-
-Internet-Draft          SSLv3 Considered Harmful           November 2014
-
 
    [RFC6101]  Freier, A., Karlton, P., and P. Kocher, "The Secure
               Sockets Layer (SSL) Protocol Version 3.0", RFC 6101,
@@ -234,7 +241,7 @@ Internet-Draft          SSLv3 Considered Harmful           November 2014
               Security (TLS) and Datagram Transport Layer Security
               (DTLS)", RFC 7366, September 2014.
 
-6.2.  Informative References
+7.2.  Informative References
 
    [FIPS180-2]
               Department of Commerce, National., "NIST FIPS 180-2,
@@ -267,20 +274,19 @@ Internet-Draft          SSLv3 Considered Harmful           November 2014
 
    [Ray09]    Ray, M., "Authentication Gap in TLS Renegotiation", 2009.
 
+
+
+
+Barnes, et al.            Expires June 6, 2015                  [Page 5]
+
+Internet-Draft             SSLv3 is not Secure             December 2014
+
+
    [TRIPLE-HS]
               Bhargavan, K., Delignat-Lavaud, A., Fournet, C., Pironti,
               A., and P-Y. Strub, "Triple Handshakes and Cookie Cutters:
               Breaking and Fixing Authentication over TLS", IEEE
               Symposium on Security and Privacy, 2014.
-
-
-
-
-
-Barnes, et al.            Expires May 26, 2015                  [Page 5]
-
-Internet-Draft          SSLv3 Considered Harmful           November 2014
-
 
 Authors' Addresses
 
@@ -327,10 +333,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-Barnes, et al.            Expires May 26, 2015                  [Page 6]
+Barnes, et al.            Expires June 6, 2015                  [Page 6]
